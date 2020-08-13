@@ -1,0 +1,117 @@
+﻿@page "/"
+
+<h1>Blazored Video</h1>
+
+<style>
+    .flash0 {
+        animation: FLASH0 200ms ease-in-out;
+    }
+    .flash1 {
+        animation: FLASH1 200ms ease-in-out;
+    }
+    @@keyframes FLASH0 {
+        0% { background-color: rgba(255, 216, 0, 0.8);}
+        100% { background-color: rgba(255, 216, 0, 0);}
+    }
+    @@keyframes FLASH1 {
+        0% { background-color: rgba(255, 216, 0, 0.8);}
+        100% { background-color: rgba(255, 216, 0, 0);}
+    }
+</style>
+<div class="d-flex align-items-start justify-content-center">
+    <div class="d-flex flex-column w-100 p-2">
+        <div class="d-flex flex-column w-100 p-2">
+            <div class="alert-primary">Events</div>
+            <div class="d-flex p-1 m-1 flex-wrap">
+                @foreach (var eventName in Enum.GetNames(typeof(VideoEvents)))
+                {
+                    var eventValue = (VideoEvents)Enum.Parse(typeof(VideoEvents), eventName);
+                    if (eventCounter.ContainsKey(eventValue))
+                    {
+                        <div class="d-flex flex-column m-1 p-1 border border-dark">
+                            <label class="bg-dark text-white p-1">@eventName</label>
+                            <span class="flash@(eventCounter[eventValue] % 2)">@eventCounter[eventValue]</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="d-flex flex-column w-100 p-2">
+            <div class="alert-primary">State</div>
+            <div class="d-flex p-1 m-1 flex-wrap">
+                @if (videoState is object)
+                {
+                    foreach (var item in typeof(VideoState).GetProperties())
+                    {
+                        try
+                        {
+                            <div class="d-flex flex-column m-1 p-1 border border-dark">
+                                <label class="bg-dark text-white p-1">@item.Name</label>
+                                <span>@item.GetValue(videoState)?.ToString()</span>
+                            </div>
+                        }
+                        catch { }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column p-2 align-content-center border border-info">
+        <BlazoredVideo EventFired="OnEvent"
+                VideoEventOptions="options"
+                class="w-100"
+                style="max-width:800px;"
+                controls="controls">
+            <source src="https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4" type="video/mp4" />
+        </BlazoredVideo>
+    </div>
+</div>
+
+@code {
+    Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+    VideoState videoState;
+    Dictionary<VideoEvents, int> eventCounter = new Dictionary<VideoEvents, int>();
+
+    protected override void OnInitialized()
+    {
+        foreach (var item in (VideoEvents[])(Enum.GetValues(typeof(VideoEvents))))
+        {
+            if (item != VideoEvents.NotSet)
+            {
+                eventCounter[item] = 0;
+            }
+        }
+        var option = new VideoStateOptions() { All = true };
+        options[VideoEvents.Abort] = option;
+        options[VideoEvents.CanPlay] = option;
+        options[VideoEvents.CanPlayThrough] = option;
+        options[VideoEvents.DurationChange] = option;
+        options[VideoEvents.Emptied] = option;
+        options[VideoEvents.Ended] = option;
+        options[VideoEvents.Error] = option;
+        options[VideoEvents.LoadedData] = option;
+        options[VideoEvents.LoadedMetadata] = option;
+        options[VideoEvents.LoadStart] = option;
+        options[VideoEvents.Pause] = option;
+        options[VideoEvents.Play] = option;
+        options[VideoEvents.Playing] = option;
+        options[VideoEvents.Progress] = option;
+        options[VideoEvents.RateChange] = option;
+        options[VideoEvents.Seeked] = option;
+        options[VideoEvents.Seeking] = option;
+        options[VideoEvents.Stalled] = option;
+        options[VideoEvents.Suspend] = option;
+        options[VideoEvents.TimeUpdate] = option;
+        options[VideoEvents.VolumeChange] = option;
+        options[VideoEvents.Waiting] = option;
+    }
+    void OnEvent(VideoEventData videoData)
+    {
+        videoState = videoData.State;
+        if (videoData.EventName != VideoEvents.NotSet)
+        {
+            eventCounter[videoData.EventName]++;
+        }
+        StateHasChanged();
+    }
+}

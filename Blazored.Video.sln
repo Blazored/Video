@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30223.230
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2658C500-CD32-4A3B-89D8-CA59C18DC891}"
+	ProjectSection(SolutionItems) = preProject
+		docs\BlazorVideo.webm = docs\BlazorVideo.webm
+		global.json = global.json
+		README.md = README.md
+		screenshot.png = screenshot.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{577BC42A-6B87-4B9B-AB8B-F2273094C31E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FB98CF00-92F4-4B10-A4AB-3FDF93D7573B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazored.Video.Tests", "tests\Blazored.Video.Tests\Blazored.Video.Tests.csproj", "{29D8FFA6-2366-4599-97BA-1F7CF01674F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazored.Video", "src\Blazored.Video\Blazored.Video.csproj", "{54447389-62E6-4765-94E0-C2297AE8B638}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer", "samples\BlazorServer\BlazorServer.csproj", "{ADF25F83-3102-4E94-9635-77752622C0E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAssembly", "samples\BlazorWebAssembly\BlazorWebAssembly.csproj", "{237424CD-14E6-4184-8374-074416E6ADAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{29D8FFA6-2366-4599-97BA-1F7CF01674F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29D8FFA6-2366-4599-97BA-1F7CF01674F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29D8FFA6-2366-4599-97BA-1F7CF01674F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29D8FFA6-2366-4599-97BA-1F7CF01674F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54447389-62E6-4765-94E0-C2297AE8B638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54447389-62E6-4765-94E0-C2297AE8B638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54447389-62E6-4765-94E0-C2297AE8B638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54447389-62E6-4765-94E0-C2297AE8B638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF25F83-3102-4E94-9635-77752622C0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF25F83-3102-4E94-9635-77752622C0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF25F83-3102-4E94-9635-77752622C0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF25F83-3102-4E94-9635-77752622C0E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{237424CD-14E6-4184-8374-074416E6ADAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{237424CD-14E6-4184-8374-074416E6ADAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{237424CD-14E6-4184-8374-074416E6ADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{237424CD-14E6-4184-8374-074416E6ADAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{29D8FFA6-2366-4599-97BA-1F7CF01674F0} = {FB98CF00-92F4-4B10-A4AB-3FDF93D7573B}
+		{ADF25F83-3102-4E94-9635-77752622C0E5} = {577BC42A-6B87-4B9B-AB8B-F2273094C31E}
+		{237424CD-14E6-4184-8374-074416E6ADAD} = {577BC42A-6B87-4B9B-AB8B-F2273094C31E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2DEE6E5-3CB4-4A7D-9FD9-8E5DB96BE454}
+	EndGlobalSection
+EndGlobal
