@@ -28,6 +28,32 @@
             window['Blazored'] = {}
         }
 
+		window['Blazored'].setProperty = function (el, name, value) {
+	        try {
+				el[name] = value;
+	        } catch (e) {
+		        console.error(e);
+	        }
+        };
+
+		window['Blazored'].getProperty = function (el, name) {
+	        try {
+				return el[name];
+	        } catch (e) {
+		        console.error(e);
+		        return null;
+	        }
+        };
+
+		window['Blazored'].invoke = function (el, name, ...arguments) {
+	        try {
+		        return el[name](name, ...arguments);
+	        } catch (e) {
+		        console.error(e);
+		        return null;
+	        }
+        };
+
         window['Blazored']['registerCustomEventHandler'] = function (el, eventName, payload) {
             if (!(el && eventName)) {
                 return false
