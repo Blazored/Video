@@ -137,6 +137,12 @@ namespace Blazored.Video
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
 		}
+
+		public string Poster
+		{
+			get { return GetValue<string>(); }
+			set { SetValue(value); }
+		}
 		
 		public ReadyState ReadyState
 		{
