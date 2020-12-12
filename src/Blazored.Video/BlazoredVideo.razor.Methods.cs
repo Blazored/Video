@@ -7,22 +7,22 @@ namespace Blazored.Video
 	{
 		public async Task StartPlayback()
 		{
-			await JS.InvokeVoidAsync("Blazored.invoke", videoRef, "play");
+			await JS.InvokeVoidAsync("BlazoredVideo.invoke", videoRef, "play");
 		}
 
 		public async Task PausePlayback()
 		{
-			await JS.InvokeVoidAsync("Blazored.invoke", videoRef, "pause");
+			await JS.InvokeVoidAsync("BlazoredVideo.invoke", videoRef, "pause");
 		}
 
 		public async Task ReloadControl()
 		{
-			await JS.InvokeVoidAsync("Blazored.invoke", videoRef, "load");
+			await JS.InvokeVoidAsync("BlazoredVideo.invoke", videoRef, "load");
 		}
 
 		public async Task<bool> CanPlayMediaType(string mediaType)
 		{
-			return await JS.InvokeAsync<bool>("Blazored.invoke", videoRef, "canPlayType", mediaType);
+			return await JS.InvokeAsync<bool>("BlazoredVideo.invoke", videoRef, "canPlayType", mediaType);
 		}
 	}
 }
