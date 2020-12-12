@@ -38,17 +38,6 @@ namespace Blazored.Video
 			get { return GetValue<TimeRanges>(); }
 		}
 
-		public class TimeRanges : List<TimeRange>
-		{
-		}
-
-		public class TimeRange
-		{
-			public int Index { get; set; }
-			public double Start { get; set; }
-			public double End { get; set; }
-		}
-
 		/// <summary>
 		///		Sets or returns whether the audio/video should display controls (like play/pause etc.)
 		/// </summary>
