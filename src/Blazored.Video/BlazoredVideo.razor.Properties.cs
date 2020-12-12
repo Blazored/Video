@@ -33,7 +33,6 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns a TimeRanges object representing the buffered parts of the audio/video
 		/// </summary>
-		[Obsolete("No Browser supports this api yet", true)]
 		public TimeRanges Buffered
 		{
 			get { return GetValue<TimeRanges>(); }
@@ -279,10 +278,10 @@ namespace Blazored.Video
 			name = char.ToLower(name[0]) + name.Substring(1);
 			if (JS is IJSInProcessRuntime inProcessRuntime)
 			{
-				return inProcessRuntime.Invoke<T>("Blazored.getProperty", videoRef, name);
+				return inProcessRuntime.Invoke<T>("BlazoredVideo.getProperty", videoRef, name);
 			}
 
-			return JS.InvokeAsync<T>("Blazored.getProperty", videoRef, name).GetAwaiter().GetResult();
+			return JS.InvokeAsync<T>("BlazoredVideo.getProperty", videoRef, name).GetAwaiter().GetResult();
 		}
 
 		protected virtual void SetValue<T>(T value, [CallerMemberName]string name = null)
@@ -290,11 +289,11 @@ namespace Blazored.Video
 			name = char.ToLower(name[0]) + name.Substring(1);
 			if (JS is IJSInProcessRuntime inProcessRuntime)
 			{
-				inProcessRuntime.InvokeVoid("Blazored.setProperty", videoRef, name, value);
+				inProcessRuntime.InvokeVoid("BlazoredVideo.setProperty", videoRef, name, value);
 				return;
 			}
 
-			JS.InvokeVoidAsync("Blazored.setProperty", videoRef, name, value).GetAwaiter().GetResult();
+			JS.InvokeVoidAsync("BlazoredVideo.setProperty", videoRef, name, value).GetAwaiter().GetResult();
 		}
 	}
 }
