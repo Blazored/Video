@@ -15,8 +15,11 @@ namespace Blazored.Video
 	/// </summary>
 	public partial class BlazoredVideo
 	{
-		[Inject] ILoggerFactory LoggerFactory { get; set; }
-		[Inject] IJSRuntime JS { get; set; }
+		[Inject] 
+		ILoggerFactory LoggerFactory { get; set; }
+
+		[Inject] 
+		protected IJSRuntime JS { get; set; }
 
 		/// <summary>
 		/// Allows you to put the same content inside this component as you would 
@@ -39,11 +42,11 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter] public Dictionary<VideoEvents, VideoStateOptions> VideoEventOptions { get; set; }
 
-		private string UniqueKey = Guid.NewGuid().ToString("N");
+		protected string UniqueKey = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
-		private ElementReference videoRef;
-		private bool Configured = false;
+		protected ElementReference videoRef;
+		protected bool Configured = false;
 #pragma warning restore CS0414
 #pragma warning restore CS0649
 		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
@@ -69,9 +72,8 @@ namespace Blazored.Video
 			}
 		}
 
-		private async Task ConfigureEvents()
+		protected virtual async Task ConfigureEvents()
 		{
-
 			var registerAllEvents = RegisterEventFired;
 
 			if (registerAllEvents || RegisterAbort)
@@ -175,7 +177,7 @@ namespace Blazored.Video
 		{
 			VideoStateOptions options = default;
 			VideoEventOptions?.TryGetValue(eventName, out options);
-			await JS.InvokeVoidAsync("Blazored.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			await JS.InvokeVoidAsync("BlazoredVideo.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 		}
 
 		/// <summary>
@@ -183,7 +185,7 @@ namespace Blazored.Video
 		/// We force one and a use it as a proxy for all the Media Events.
 		/// </summary>
 		/// <param name="args">The event args - Value contains our JSON</param>
-		void OnChange(ChangeEventArgs args)
+		protected virtual void OnChange(ChangeEventArgs args)
 		{
 			var ThisEvent = args?.Value?.ToString();
 			VideoEventData videoData = new VideoEventData();

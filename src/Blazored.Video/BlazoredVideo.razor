@@ -1,80 +1,22 @@
 ﻿@*
-    Media Events don't work in Blazor - I believe because they don't bubble.
-    Blazor attaches it's event handlers to the document, and does not register
-    these events as they don't bubble up to the document.
-    So, this uses onchange and forces the video element to have a 'value' property,
-    which it doesn't normally have.
-    I then populate the 'value' with a JSON string containing the requested data
-    and the event name.
+	Media Events don't work in Blazor - I believe because they don't bubble.
+	Blazor attaches it's event handlers to the document, and does not register
+	these events as they don't bubble up to the document.
+	So, this uses onchange and forces the video element to have a 'value' property,
+	which it doesn't normally have.
+	I then populate the 'value' with a JSON string containing the requested data
+	and the event name.
 
-    Sample JSON data for an event:
-    {
-        "name":"Suspend",
-        "data":
-        {
-            "Autoplay":false,
-            "Controls":true,
-            "CurrentSrc":"https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4",
-            "CurrentTime":2.758966
-        }
-    }
+	Sample JSON data for an event:
+	{
+		"name":"Suspend",
+		"data":
+		{
+			"Autoplay":false,
+			"Controls":true,
+			"CurrentSrc":"https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4",
+			"CurrentTime":2.758966
+		}
+	}
 *@
 <video id="@UniqueKey" @key="UniqueKey" @ref="videoRef" @attributes=@Attributes @onchange=@OnChange>@ChildContent</video>
-@if (!Configured)
-{
-    Configured = true;
-    <script suppress-error="BL9992">
-        if (!window['Blazored']) {
-            window['Blazored'] = {}
-        }
-
-        window['Blazored']['registerCustomEventHandler'] = function (el, eventName, payload) {
-            if (!(el && eventName)) {
-                return false
-            }
-            if (!el.hasOwnProperty('customEvent')) {
-                el['customEvent'] = function (eventName, payload) {
-
-                    this['value'] = getJSON(this, eventName, payload)
-
-                    var event
-                    if (typeof (Event) === 'function') {
-                        event = new Event('change')
-                    } else {
-                        event = document.createEvent('Event')
-                        event.initEvent('change', true, true)
-                    }
-
-                    this.dispatchEvent(event)
-                }
-            }
-
-            el.addEventListener(eventName, function () { el.customEvent(eventName, payload) });
-
-            // Craft a bespoke json string to serve as a payload for the event
-            function getJSON(el, eventName, payload) {
-                if (payload && payload.length > 0) {
-                    // this syntax copies just the properties we request from the source element
-                    // IE 11 compatible
-                    let data = {};
-                    for (var obj in payload) {
-                        var item = payload[obj];
-                        if (el[item]) {
-                            data[item] = el[item]
-                        }
-                    }
-
-                    // this stringify overload eliminates undefined/null/empty values
-                    return JSON.stringify(
-                        { name: eventName, state: data }
-                        , function (k, v) { return (v === undefined || v == null || v.length === 0) ? undefined : v }
-                    )
-                } else {
-                    return JSON.stringify(
-                        { name: eventName }
-                    )
-                }
-            }
-        }
-    </script>
-}
