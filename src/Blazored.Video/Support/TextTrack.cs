@@ -35,4 +35,9 @@ namespace Blazored.Video.Support
 		/// </summary>
 		public List<TextTrackCue> ActiveCues { get; set; } 
 	}
+
+	public class TextTracks : List<TextTrack>
+	{
+
+	}
 }
