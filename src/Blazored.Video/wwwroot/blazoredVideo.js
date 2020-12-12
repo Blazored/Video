@@ -16,17 +16,29 @@
             }
             try {
                 var value = el[name];
+                
+                // the default TimeRanges and TextTracks array are custom enumerations and cannot be processed by the json serializer
+                //  therefor we must convert them to plain objects
+
                 if (value instanceof TimeRanges) {
-                    var ranges = new Array();
+                    let items = new Array();
                     for (var i = 0; i < value.length; i++) {
-                        var range = {
+                        let item = {
                             index: i,
                             start: value.start(i),
                             end: value.end(i)
                         };
-                        ranges.push(range);
+                        items.push(item);
                     }
-                    value = ranges;
+                    value = items;
+                }
+                if (value instanceof TextTracks) {
+                    let items = new Array();
+                    for (var i = 0; i < value.length; i++) {
+                        let item = value[i];
+                        items.push(item);
+                    }
+                    value = items;
                 }
                 return value;
             } catch (e) {
