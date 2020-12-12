@@ -85,7 +85,6 @@ namespace Blazored.Video
 		public bool DefaultMuted
 		{
 			get { return GetValue<bool>(); }
-			set { SetValue(value); }
 		}
 
 		/// <summary>
@@ -94,7 +93,6 @@ namespace Blazored.Video
 		public double DefaultPlaybackRate 
 		{
 			get { return GetValue<double>(); }
-			set { SetValue(value); }
 		}
 
 		/// <summary>
@@ -199,7 +197,6 @@ namespace Blazored.Video
 		public PreloadTypes Preload
 		{
 			get { return GetValue<PreloadTypes>(); }
-			set { SetValue(value); }
 		}
 
 		public enum PreloadTypes
