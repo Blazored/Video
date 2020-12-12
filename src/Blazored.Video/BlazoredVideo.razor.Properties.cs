@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Blazored.Video.Support;
 using Microsoft.JSInterop;
@@ -35,22 +36,18 @@ namespace Blazored.Video
 		[Obsolete("No Browser supports this api yet", true)]
 		public TimeRanges Buffered
 		{
-			get { throw new NotImplementedException("The Buffered Property is not yet implemented"); }
+			get { return GetValue<TimeRanges>(); }
 		}
 
-		public class TimeRanges
+		public class TimeRanges : List<TimeRange>
 		{
-			public int Length { get; set; }
+		}
 
-			public int Start(int index)
-			{
-				throw new NotImplementedException();
-			}
-
-			public int End(int index)
-			{
-				throw new NotImplementedException();
-			}
+		public class TimeRange
+		{
+			public int Index { get; set; }
+			public double Start { get; set; }
+			public double End { get; set; }
 		}
 
 		/// <summary>
@@ -229,7 +226,6 @@ namespace Blazored.Video
 		public TimeRanges Seekable
 		{
 			get { return GetValue<TimeRanges>(); }
-			set { SetValue(value); }
 		}
 
 		/// <summary>
