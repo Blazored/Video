@@ -1,4 +1,6 @@
-﻿namespace Blazored.Video.Support
+﻿using System.Collections.Generic;
+
+namespace Blazored.Video.Support
 {
 	/// <summary>
 	/// Not in active use - JSON.stringify doesn't give us the AudioTracks for some reason
@@ -27,5 +29,13 @@
 		/// get or set if the track is active(true|false)
 		/// </summary>
 		public bool Enabled { get; set; }
+	}
+
+	public class AudioTrackList : List<AudioTrack>
+	{
+		public AudioTrackList()
+		{
+			
+		}
 	}
 }
