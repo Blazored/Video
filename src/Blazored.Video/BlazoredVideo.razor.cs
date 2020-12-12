@@ -72,9 +72,8 @@ namespace Blazored.Video
 			}
 		}
 
-		private async Task ConfigureEvents()
+		protected virtual async Task ConfigureEvents()
 		{
-
 			var registerAllEvents = RegisterEventFired;
 
 			if (registerAllEvents || RegisterAbort)
@@ -178,7 +177,7 @@ namespace Blazored.Video
 		{
 			VideoStateOptions options = default;
 			VideoEventOptions?.TryGetValue(eventName, out options);
-			await JS.InvokeVoidAsync("Blazored.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			await JS.InvokeVoidAsync("BlazoredVideo.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 		}
 
 		/// <summary>

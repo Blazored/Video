@@ -25,11 +25,11 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageReleaseNotes>Initial Release</PackageReleaseNotes>
-		<Version>1.0.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="\" />
+		<Resource Include="wwwroot\blazoredVideo.js" />
 	</ItemGroup>
 
 	<ItemGroup>
