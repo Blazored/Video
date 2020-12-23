@@ -1,5 +1,6 @@
 using Blazored.Video.Support;
 using System;
+using System.Linq;
 using System.Text.Json;
 using Xunit;
 
@@ -31,11 +32,12 @@ namespace Blazored.Video.Tests
 		[Fact]
 		public void CanBeInflatedFromAllData()
 		{
+
 			var data = @"{""name"":""Pause"",""state"":{""Autoplay"":false,""Controls"":true,
 				""CurrentSrc"":""https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4"",
 				""CurrentTime"":5.25375,""DefaultMuted"":false,""DefaultPlaybackRate"":1,""Duration"":48.516,""Ended"":false,
-				""Loop"":false,""Muted"":false,""NetworkState"":1,""Paused"":true,""PlaybackRate"":1,""Played"":{},
-				""Preload"":""metadata"",""ReadyState"":4,""Seekable"":{},""Seeking"":false,""Volume"":1}}";
+				""Loop"":false,""Muted"":false,""NetworkState"":1,""Paused"":true,""PlaybackRate"":1,
+				""Preload"":""metadata"",""ReadyState"":4,""Seeking"":false,""Volume"":1}}";
 
 			var result = JsonSerializer.Deserialize<VideoEventData>(data, options);
 
@@ -54,10 +56,10 @@ namespace Blazored.Video.Tests
 			Assert.Equal(NetworkState.NETWORK_IDLE,result.State.NetworkState);
 			Assert.True(result.State.Paused);
 			Assert.Equal(1, result.State.PlaybackRate);
-			Assert.Equal(0,result.State.Played.Length);
+			Assert.Null(result.State.Played); 
 			Assert.Equal("metadata",result.State.Preload);
 			Assert.Equal(ReadyState.HAVE_ENOUGH_DATA,result.State.ReadyState);
-			Assert.Equal(0,result.State.Seekable.Length);
+			Assert.Null(result.State.Seekable);
 			Assert.False(result.State.Seeking);
 			Assert.Equal(1, result.State.Volume);
 
