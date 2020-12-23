@@ -76,13 +76,13 @@
 
                     this.dispatchEvent(event);
                 };
-            }
+						}
 
-            if ($) {
-                $(el).on(eventName, function() { el.customEvent(eventName, payload) });
-            } else {
-                el.addEventListener(eventName, function() { el.customEvent(eventName, payload) });
-            }
+						if (window.jQuery) {
+							jQuery(el).on(eventName, function () { el.customEvent(eventName, payload) });
+						} else {
+							el.addEventListener(eventName, function () { el.customEvent(eventName, payload) });
+						}
 
 
             // Craft a bespoke json string to serve as a payload for the event
