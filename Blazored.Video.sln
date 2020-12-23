@@ -5,7 +5,6 @@ VisualStudioVersion = 16.0.30223.230
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2658C500-CD32-4A3B-89D8-CA59C18DC891}"
 	ProjectSection(SolutionItems) = preProject
-		docs\BlazorVideo.webm = docs\BlazorVideo.webm
 		global.json = global.json
 		README.md = README.md
 		screenshot.png = screenshot.png
@@ -21,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazored.Video", "src\Blazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorServer", "samples\BlazorServer\BlazorServer.csproj", "{ADF25F83-3102-4E94-9635-77752622C0E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebAssembly", "samples\BlazorWebAssembly\BlazorWebAssembly.csproj", "{237424CD-14E6-4184-8374-074416E6ADAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebAssembly", "samples\BlazorWebAssembly\BlazorWebAssembly.csproj", "{237424CD-14E6-4184-8374-074416E6ADAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
