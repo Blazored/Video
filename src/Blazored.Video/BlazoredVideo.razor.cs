@@ -42,7 +42,13 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter] public Dictionary<VideoEvents, VideoStateOptions> VideoEventOptions { get; set; }
 
-		protected string UniqueKey = Guid.NewGuid().ToString("N");
+        /// <summary>
+        /// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
+        /// When set to true, please include the script in your index/_Host page <code>&lt;script src="_content/Blazored.Video/blazoredVideo.js"&gt;&lt;/script&gt;</code>
+        /// </summary>
+        [Parameter] public bool UseExternalJavaScript { get; set; } = false;
+
+        protected string UniqueKey = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
 		protected ElementReference videoRef;
@@ -168,7 +174,6 @@ namespace Blazored.Video
 
 		/// <summary>
 		/// This is where we generate the markup required to make events work.
-		/// TODO: Move the JS code to a script and make a simple call here?
 		/// </summary>
 		/// <param name="eventName">The DOM event name e.g. play, pause etc</param>
 		/// <param name="payloadName">In case someone wants to change it. Don't though.</param>
