@@ -59,8 +59,17 @@
                     let data = {};
                     for (var obj in payload) {
                         var item = payload[obj];
-                        if (el[item]) {
-                            data[item] = el[item]
+                        var itemValue = el[item];
+                        if (itemValue) {
+                            if (typeof itemValue === 'object') {
+                                data[item] = {}
+                                for (var inhProp in itemValue) {
+                                    data[item][inhProp] = itemValue[inhProp]
+                                }
+                            }
+                            else {
+                                data[item] = itemValue
+                            }
                         }
                     }
 
