@@ -140,7 +140,7 @@
 
 	async Task PausePlay()
 	{
-		if (await video.Paused)
+		if (video.Paused)
 		{
 			await video.StartPlayback();
 		}
