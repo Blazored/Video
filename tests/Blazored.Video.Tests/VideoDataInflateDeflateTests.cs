@@ -1,14 +1,13 @@
-﻿using Blazored.Video.Support;
-using System;
-using System.Linq;
+﻿using System;
 using System.Text.Json;
+using Blazored.Video.Support;
 using Xunit;
 
 namespace Blazored.Video.Tests
 {
 	public class VideoDataInflateDeflateTests
 	{
-		JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
+		readonly JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
 		[Fact]
 		public void CanBeInflatedFromNothing()
 		{
@@ -56,9 +55,9 @@ namespace Blazored.Video.Tests
 			Assert.Equal(NetworkState.NETWORK_IDLE, result.State.NetworkState);
 			Assert.True(result.State.Paused);
 			Assert.Equal(1, result.State.PlaybackRate);
-			Assert.Null(result.State.Played); 
-			Assert.Equal("metadata",result.State.Preload);
-			Assert.Equal(ReadyState.HAVE_ENOUGH_DATA,result.State.ReadyState);
+			Assert.Null(result.State.Played);
+			Assert.Equal("metadata", result.State.Preload);
+			Assert.Equal(ReadyState.HAVE_ENOUGH_DATA, result.State.ReadyState);
 			Assert.Null(result.State.Seekable);
 			Assert.False(result.State.Seeking);
 			Assert.Equal(1, result.State.Volume);

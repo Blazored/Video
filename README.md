@@ -8,6 +8,9 @@ The easiest html5 `video` implementation for [Blazor](https://blazor.net) applic
 
 ![Screenshot of the component in action](screenshot.png)
 
+## Changelog
+2021-02-21 : Add standard Methods and Properties (big thanks to https://github.com/JPVenson)
+
 ## Getting Setup
 
 You can install the package via the nuget package manager - just search for *Blazored.Video*. You can also install via powershell using the following command.
@@ -207,6 +210,26 @@ void OnTimeUpdate(VideoState state)
     // do something with this
 }
 ```
+
+## Calling Standard Methods 
+* Added 2021-02-21 *
+
+The component now supports four standard methods 
+
+| Method | Description | Notes |
+| --- | --- | --- |
+| StartPlayback | Start playback from C# code | `await videoRef.StartPlayback()`
+| PausePlayback | Pause playback from C# code | `await videoRef.PausePlayback()`
+| ReloadControl | Reload media from C# code | `await videoRef.ReloadControl()`
+| CanPlayMediaType | Check media type from C# code | `bool isSupported = await videoRef.CanPlayMediaType("video/webm")`
+
+## Get/Set Standard Properties
+* Added 2021-02-21 *
+
+The component now supports most standard properties directly from C# code.
+
+Example
+`int duration = await videoRef.Duration`
 
 ### Customising the html
 
