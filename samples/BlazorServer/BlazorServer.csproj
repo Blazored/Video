@@ -5,7 +5,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Blazored.Video\Blazored.Video.csproj" />
+    <PackageReference Include="Blazored.Video" Version="1.1.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Shared\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SharedRCL\SharedRCL.csproj" />
 	</ItemGroup>
 
 </Project>
