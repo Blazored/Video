@@ -180,7 +180,7 @@ namespace Blazored.Video.Support
 
 			static string FormatAsPayload(string name)
 			{
-				var payload = $"this.{name.Substring(0, 1).ToLower()}{name.Substring(1)}";
+				var payload = $"this.{VideoStateOptionsExt.FormatAsPayload(name)}";
 				return $"{name}: {payload}";
 			}
 		}
@@ -225,8 +225,8 @@ namespace Blazored.Video.Support
 
 			return list.ToArray();
 
-			static string FormatAsPayload(string name)
-				=> $"{name.Substring(0, 1).ToLower()}{name.Substring(1)}";
 		}
+			internal static string FormatAsPayload(string name)
+				=> $"{char.ToLower(name[0])}{name[1..]}";
 	}
 }

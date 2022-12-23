@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Blazored.Video.Support;
 using Microsoft.JSInterop;
 
@@ -16,7 +15,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video should start playing as soon as it is loaded
 		/// </summary>
-		public Task<bool> Autoplay
+		public bool Autoplay
 		{
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
@@ -34,7 +33,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns a TimeRanges object representing the buffered parts of the audio/video
 		/// </summary>
-		public Task<TimeRanges> Buffered
+		public TimeRanges Buffered
 		{
 			get { return GetValue<TimeRanges>(); }
 		}
@@ -42,7 +41,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video should display controls (like play/pause etc.)
 		/// </summary>
-		public Task<bool> Controls
+		public bool Controls
 		{
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
@@ -51,7 +50,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns the URL of the current audio/video
 		/// </summary>
-		public Task<string> CurrentSrc
+		public string CurrentSrc
 		{
 			get { return GetValue<string>(); }
 		}
@@ -59,7 +58,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the current playback position in the audio/video (in seconds)
 		/// </summary>
-		public Task<int> CurrentTime
+		public int CurrentTime
 		{
 			get { return GetValue<int>(); }
 			set { SetValue(value); }
@@ -68,7 +67,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video should be muted by default
 		/// </summary>
-		public Task<bool> DefaultMuted
+		public bool DefaultMuted
 		{
 			get { return GetValue<bool>(); }
 		}
@@ -76,7 +75,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the default speed of the audio/video playback
 		/// </summary>
-		public Task<double> DefaultPlaybackRate 
+		public double DefaultPlaybackRate 
 		{
 			get { return GetValue<double>(); }
 		}
@@ -84,7 +83,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns the length of the current audio/video (in seconds)
 		/// </summary>
-		public Task<int> Duration
+		public int Duration
 		{
 			get { return GetValue<int>(); }
 		}
@@ -92,7 +91,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns whether the playback of the audio/video has ended or not
 		/// </summary>
-		public Task<bool> HasEnded
+		public bool HasEnded
 		{
 			get { return GetValue<bool>("ended"); }
 		}
@@ -100,7 +99,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video should start over again when finished
 		/// </summary>
-		public Task<bool> Loop
+		public bool Loop
 		{
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
@@ -109,7 +108,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the group the audio/video belongs to (used to link multiple audio/video elements)
 		/// </summary>
-		public Task<string> MediaGroup
+		public string MediaGroup
 		{
 			get { return GetValue<string>(); }
 			set { SetValue(value); }
@@ -118,7 +117,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video is muted or not
 		/// </summary>
-		public Task<bool> Muted
+		public bool Muted
 		{
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
@@ -127,7 +126,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns the current network state of the audio/video
 		/// </summary>
-		public Task<NetworkStateTypes> NetworkState
+		public NetworkStateTypes NetworkState
 		{
 			get { return GetValue<NetworkStateTypes>(); }
 		}
@@ -146,7 +145,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns whether the audio/video is paused or not
 		/// </summary>
-		public Task<bool> Paused
+		public bool Paused
 		{
 			get { return GetValue<bool>(); }
 		}
@@ -163,7 +162,7 @@ namespace Blazored.Video
 		/// </para>
 		/// </example>
 		/// </summary>
-		public Task<double> PlaybackRate 
+		public double PlaybackRate 
 		{
 			get { return GetValue<double>(); }
 			set { SetValue(value); }
@@ -172,7 +171,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns a TimeRanges object representing the played parts of the audio/video
 		/// </summary>
-		public Task<TimeRanges> Played
+		public TimeRanges Played
 		{
 			get { return GetValue<TimeRanges>(); }
 		}
@@ -180,7 +179,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns whether the audio/video should be loaded when the page loads
 		/// </summary>
-		public Task<PreloadTypes> Preload
+		public PreloadTypes Preload
 		{
 			get { return GetValue<PreloadTypes>(); }
 		}
@@ -195,7 +194,7 @@ namespace Blazored.Video
 		/// <summary>
 		/// The poster attribute specifies an image to be shown while the video is downloading, or until the user hits the play button. If this is not included, the first frame of the video will be used instead.
 		/// </summary>
-		public Task<string> Poster
+		public string Poster
 		{
 			get { return GetValue<string>(); }
 			set { SetValue(value); }
@@ -204,7 +203,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns the current ready state of the audio/video
 		/// </summary>
-		public Task<ReadyState> ReadyState
+		public ReadyState ReadyState
 		{
 			get { return GetValue<ReadyState>(); }
 		}
@@ -212,7 +211,7 @@ namespace Blazored.Video
 		/// <summary>
 		/// 	Returns a TimeRanges object representing the seekable parts of the audio/video
 		/// </summary>
-		public Task<TimeRanges> Seekable
+		public TimeRanges Seekable
 		{
 			get { return GetValue<TimeRanges>(); }
 		}
@@ -220,7 +219,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns whether the user is currently seeking in the audio/video
 		/// </summary>
-		public Task<bool> IsSeeking
+		public bool IsSeeking
 		{
 			get { return GetValue<bool>("seeking"); }
 		}
@@ -228,7 +227,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the current source of the audio/video element
 		/// </summary>
-		public Task<string> Src
+		public string Src
 		{
 			get { return GetValue<string>(); }
 			set { SetValue(value); }
@@ -243,7 +242,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns a TextTrackList object representing the available text tracks
 		/// </summary>
-		public Task<TextTracks> TextTracks
+		public TextTracks TextTracks
 		{
 			get { return GetValue<TextTracks>(); }
 		}
@@ -257,41 +256,33 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the volume of the audio/video
 		/// </summary>
-		public Task<double> Volume 
+		public double Volume 
 		{
 			get { return GetValue<double>(); }
 			set { SetValue(value); }
 		}
 
-		protected virtual Task<T> GetValue<T>([CallerMemberName]string name = null)
+		protected virtual T GetValue<T>([CallerMemberName]string name = null)
 		{
-            try
-            {
-                name = char.ToLower(name[0]) + name.Substring(1);
-                if (JS is IJSInProcessRuntime inProcessRuntime)
-                    {
-                        return Task.FromResult(inProcessRuntime.Invoke<T>("BlazoredVideo.getProperty", videoRef, name));
-                }
+			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
+			if (JS is IJSInProcessRuntime inProcessRuntime)
+			{
+				return inProcessRuntime.Invoke<T>("BlazoredVideo.getProperty", videoRef, payloadName);
+			}
 
-                return JS.InvokeAsync<T>("BlazoredVideo.getProperty", videoRef, name).AsTask();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine($"Error:{ex.GetBaseException().Message}");
-            }
-            return Task.FromResult(default(T));
-        }
+			return JS.InvokeAsync<T>("BlazoredVideo.getProperty", videoRef, payloadName).GetAwaiter().GetResult();
+		}
 
 		protected virtual void SetValue<T>(T value, [CallerMemberName]string name = null)
 		{
-			name = char.ToLower(name[0]) + name.Substring(1);
+			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
 			if (JS is IJSInProcessRuntime inProcessRuntime)
 			{
-				inProcessRuntime.InvokeVoid("BlazoredVideo.setProperty", videoRef, name, value);
+				inProcessRuntime.InvokeVoid("BlazoredVideo.setProperty", videoRef, payloadName, value);
 				return;
 			}
 
-			JS.InvokeVoidAsync("BlazoredVideo.setProperty", videoRef, name, value).GetAwaiter().GetResult();
+			JS.InvokeVoidAsync("BlazoredVideo.setProperty", videoRef, payloadName, value).GetAwaiter().GetResult();
 		}
 	}
 }

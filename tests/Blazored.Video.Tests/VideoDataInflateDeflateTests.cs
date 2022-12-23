@@ -1,14 +1,13 @@
-using Blazored.Video.Support;
 using System;
-using System.Linq;
 using System.Text.Json;
+using Blazored.Video.Support;
 using Xunit;
 
 namespace Blazored.Video.Tests
 {
 	public class VideoDataInflateDeflateTests
 	{
-		JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
+		readonly JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
 		[Fact]
 		public void CanBeInflatedFromNothing()
 		{
@@ -27,7 +26,7 @@ namespace Blazored.Video.Tests
 			var result = JsonSerializer.Deserialize<VideoEventData>(data, options);
 
 			Assert.NotNull(result);
-			Assert.Equal("Pause",result.Name);
+			Assert.Equal("Pause", result.Name);
 		}
 		[Fact]
 		public void CanBeInflatedFromAllData()
@@ -42,23 +41,23 @@ namespace Blazored.Video.Tests
 			var result = JsonSerializer.Deserialize<VideoEventData>(data, options);
 
 			Assert.NotNull(result);
-			Assert.Equal("Pause",result.Name);
+			Assert.Equal("Pause", result.Name);
 			Assert.False(result.State.Autoplay);
 			Assert.True(result.State.Controls);
-			Assert.Equal(new Uri("https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4"),result.State.CurrentSrc);
-			Assert.Equal(5.25375,result.State.CurrentTime);
+			Assert.Equal(new Uri("https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4"), result.State.CurrentSrc);
+			Assert.Equal(5.25375, result.State.CurrentTime);
 			Assert.False(result.State.DefaultMuted);
 			Assert.Equal(1, result.State.DefaultPlaybackRate);
 			Assert.Equal(48.516, result.State.Duration);
 			Assert.False(result.State.Ended);
 			Assert.False(result.State.Loop);
 			Assert.False(result.State.Muted);
-			Assert.Equal(NetworkState.NETWORK_IDLE,result.State.NetworkState);
+			Assert.Equal(NetworkState.NETWORK_IDLE, result.State.NetworkState);
 			Assert.True(result.State.Paused);
 			Assert.Equal(1, result.State.PlaybackRate);
-			Assert.Null(result.State.Played); 
-			Assert.Equal("metadata",result.State.Preload);
-			Assert.Equal(ReadyState.HAVE_ENOUGH_DATA,result.State.ReadyState);
+			Assert.Null(result.State.Played);
+			Assert.Equal("metadata", result.State.Preload);
+			Assert.Equal(ReadyState.HAVE_ENOUGH_DATA, result.State.ReadyState);
 			Assert.Null(result.State.Seekable);
 			Assert.False(result.State.Seeking);
 			Assert.Equal(1, result.State.Volume);
