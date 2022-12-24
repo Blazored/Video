@@ -4,31 +4,31 @@
 
 <style>
 	.flash0 {
-		animation: FLASH0 200ms ease-in-out;
+			animation: FLASH0 200ms ease-in-out;
 	}
 
 	.flash1 {
-		animation: FLASH1 200ms ease-in-out;
+			animation: FLASH1 200ms ease-in-out;
 	}
 
 	@@keyframes FLASH0 {
-		0% {
-			background-color: rgba(255, 216, 0, 0.8);
-		}
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
 
-		100% {
-			background-color: rgba(255, 216, 0, 0);
-		}
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
 	}
 
 	@@keyframes FLASH1 {
-		0% {
-			background-color: rgba(255, 216, 0, 0.8);
-		}
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
 
-		100% {
-			background-color: rgba(255, 216, 0, 0);
-		}
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
 	}
 </style>
 <div class="d-flex align-items-start justify-content-center">
@@ -70,17 +70,18 @@
 		</div>
 	</div>
 	<div class="d-flex flex-column p-2 align-content-center border border-info">
-		<BlazoredVideo @ref="video" EventFired="OnEvent"
-									 VideoEventOptions="options"
-									 class="w-100"
-									 autoplay="autoplay"
-									 loop="loop"
-									 style="max-width:800px;"
-									 controls="controls">
-			<source src="https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4" type="video/mp4" />
+		<BlazoredVideo @ref="video" 
+									EventFired="OnEvent"
+									VideoEventOptions="options"
+									class="w-100"
+									autoplay="autoplay"
+									loop="loop"
+									style="max-width:800px;"
+									controls="controls">
+			<source src="video/elephants2.mp4" type="video/mp4" />
 		</BlazoredVideo>
-		<button class="btn btn-primary" @onclick=@PausePlay>@PausePlayText</button>
-		<button class="btn btn-primary" @onclick=@Reload>Reload</button>
+		<button class="btn btn-primary" @onclick=PausePlay>@PausePlayText</button>
+		<button class="btn btn-primary" @onclick=Reload>Reload</button>
 	</div>
 </div>
 
@@ -100,29 +101,29 @@
 				eventCounter[item] = 0;
 			}
 		}
-		var option = new VideoStateOptions() { All = true };
-		options[VideoEvents.Abort] = option;
-		options[VideoEvents.CanPlay] = option;
-		options[VideoEvents.CanPlayThrough] = option;
-		options[VideoEvents.DurationChange] = option;
-		options[VideoEvents.Emptied] = option;
-		options[VideoEvents.Ended] = option;
-		options[VideoEvents.Error] = option;
-		options[VideoEvents.LoadedData] = option;
-		options[VideoEvents.LoadedMetadata] = option;
-		options[VideoEvents.LoadStart] = option;
-		options[VideoEvents.Pause] = option;
-		options[VideoEvents.Play] = option;
-		options[VideoEvents.Playing] = option;
-		options[VideoEvents.Progress] = option;
-		options[VideoEvents.RateChange] = option;
-		options[VideoEvents.Seeked] = option;
-		options[VideoEvents.Seeking] = option;
-		options[VideoEvents.Stalled] = option;
-		options[VideoEvents.Suspend] = option;
-		options[VideoEvents.TimeUpdate] = option;
-		options[VideoEvents.VolumeChange] = option;
-		options[VideoEvents.Waiting] = option;
+		var allOptionsEnabled = new VideoStateOptions() { All = true };
+		options[VideoEvents.Abort] = allOptionsEnabled;
+		options[VideoEvents.CanPlay] = allOptionsEnabled;
+		options[VideoEvents.CanPlayThrough] = allOptionsEnabled;
+		options[VideoEvents.DurationChange] = allOptionsEnabled;
+		options[VideoEvents.Emptied] = allOptionsEnabled;
+		options[VideoEvents.Ended] = allOptionsEnabled;
+		options[VideoEvents.Error] = allOptionsEnabled;
+		options[VideoEvents.LoadedData] = allOptionsEnabled;
+		options[VideoEvents.LoadedMetadata] = allOptionsEnabled;
+		options[VideoEvents.LoadStart] = allOptionsEnabled;
+		options[VideoEvents.Pause] = allOptionsEnabled;
+		options[VideoEvents.Play] = allOptionsEnabled;
+		options[VideoEvents.Playing] = allOptionsEnabled;
+		options[VideoEvents.Progress] = allOptionsEnabled;
+		options[VideoEvents.RateChange] = allOptionsEnabled;
+		options[VideoEvents.Seeked] = allOptionsEnabled;
+		options[VideoEvents.Seeking] = allOptionsEnabled;
+		options[VideoEvents.Stalled] = allOptionsEnabled;
+		options[VideoEvents.Suspend] = allOptionsEnabled;
+		options[VideoEvents.TimeUpdate] = allOptionsEnabled;
+		options[VideoEvents.VolumeChange] = allOptionsEnabled;
+		options[VideoEvents.Waiting] = allOptionsEnabled;
 	}
 	void OnEvent(VideoEventData videoData)
 	{
@@ -140,9 +141,10 @@
 
 	async Task PausePlay()
 	{
-		if (video.Paused)
+		if (await video.GetPausedAsync())
 		{
 			await video.StartPlayback();
+			await video.SetPosterAsync("./images/elephants2.jpg");
 		}
 		else
 		{
