@@ -9,7 +9,10 @@ The easiest html5 `video` implementation for [Blazor](https://blazor.net) applic
 ![Screenshot of the component in action](screenshot.png)
 
 ## Changelog
-2021-02-21 : Add standard Methods and Properties (big thanks to https://github.com/JPVenson)
+### 2022-24-12 Version 1.2.0-beta
+ - Add standard Methods and Properties (big thanks to https://github.com/JPVenson) and Async versions (for Server). 
+ - Add new public parameter UseExternalJavaScript - set true if developer wants to load the blazoredVideo.js file themselves. Default is false - in which case, the component will load its own JS file as in previous versions.
+ - Bump dotnet version to 6.0 as 3.x and 5.x are now out of support.
 
 ## Getting Setup
 
@@ -212,7 +215,7 @@ void OnTimeUpdate(VideoState state)
 ```
 
 ## Calling Standard Methods 
-* Added 2021-02-21 *
+** Added 2022-12-24 **
 
 The component now supports four standard methods 
 
@@ -224,12 +227,15 @@ The component now supports four standard methods
 | CanPlayMediaType | Check media type from C# code | `bool isSupported = await videoRef.CanPlayMediaType("video/webm")`
 
 ## Get/Set Standard Properties
-* Added 2021-02-21 *
+** Added 2022-12-24 **
 
 The component now supports most standard properties directly from C# code.
 
-Example
-`int duration = await videoRef.Duration`
+Example - WASM only
+`int duration = videoRef.Duration`
+
+Example - Remote JS (Server) and WASM
+`int duration = await videoRef.GetDurationAsync()`
 
 ### Customising the html
 
