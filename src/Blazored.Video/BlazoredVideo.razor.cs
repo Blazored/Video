@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Blazored.Video.Support;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace Blazored.Video
 {
@@ -15,10 +15,10 @@ namespace Blazored.Video
 	/// </summary>
 	public partial class BlazoredVideo
 	{
-		[Inject] 
+		[Inject]
 		ILoggerFactory LoggerFactory { get; set; }
 
-		[Inject] 
+		[Inject]
 		protected IJSRuntime JS { get; set; }
 
 		/// <summary>
@@ -42,20 +42,20 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter] public Dictionary<VideoEvents, VideoStateOptions> VideoEventOptions { get; set; }
 
-        /// <summary>
-        /// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
-        /// When set to true, please include the script in your index/_Host page <code>&lt;script src="_content/Blazored.Video/blazoredVideo.js"&gt;&lt;/script&gt;</code>
-        /// </summary>
-        [Parameter] public bool UseExternalJavaScript { get; set; } = false;
+		/// <summary>
+		/// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
+		/// When set to true, please include the script in your index/_Host page <code>&lt;script src="_content/Blazored.Video/blazoredVideo.js"&gt;&lt;/script&gt;</code>
+		/// </summary>
+		[Parameter] public bool UseExternalJavaScript { get; set; } = false;
 
-        protected string UniqueKey = Guid.NewGuid().ToString("N");
+		protected string UniqueKey = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
 		protected ElementReference videoRef;
 		protected bool Configured = false;
 #pragma warning restore CS0414
 #pragma warning restore CS0649
-		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
+		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
 
 		/// <summary>
 		/// Configure the events and the data payload requested
@@ -182,7 +182,14 @@ namespace Blazored.Video
 		{
 			VideoStateOptions options = default;
 			VideoEventOptions?.TryGetValue(eventName, out options);
-			await JS.InvokeVoidAsync("BlazoredVideo.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			try
+			{
+				await JS.InvokeVoidAsync("BlazoredVideo.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			}
+			catch
+			{
+				// if we are self registering the JS code, there can be a delay before it is ready
+			}
 		}
 
 		/// <summary>

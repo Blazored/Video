@@ -270,7 +270,7 @@ namespace Blazored.Video
 				return inProcessRuntime.Invoke<T>("BlazoredVideo.getProperty", videoRef, payloadName);
 			}
 
-			return JS.InvokeAsync<T>("BlazoredVideo.getProperty", videoRef, payloadName).GetAwaiter().GetResult();
+			throw new Exception($"Synchronous access to property {name} is only allowed in WebAssembly - use Get{name}Async() instead.");
 		}
 
 		protected virtual void SetValue<T>(T value, [CallerMemberName]string name = null)
@@ -282,7 +282,7 @@ namespace Blazored.Video
 				return;
 			}
 
-			JS.InvokeVoidAsync("BlazoredVideo.setProperty", videoRef, payloadName, value).GetAwaiter().GetResult();
-		}
-	}
+            throw new Exception($"Synchronous access to property {name} is only allowed in WebAssembly - use Set{name}Async() instead.");
+        }
+    }
 }
