@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<h1>Blazored Video</h1>
+<h1>Blazored Video Demo - All events and all state monitored</h1>
 
 <style>
 	.flash0 {
@@ -80,8 +80,6 @@
 									controls="controls">
 			<source src="video/elephants2.mp4" type="video/mp4" />
 		</BlazoredVideo>
-		<button class="btn btn-primary" @onclick=PausePlay>@PausePlayText</button>
-		<button class="btn btn-primary" @onclick=Reload>Reload</button>
 	</div>
 </div>
 
@@ -89,41 +87,19 @@
 	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
 	VideoState videoState;
 	Dictionary<VideoEvents, int> eventCounter = new Dictionary<VideoEvents, int>();
-	string PausePlayText = "Play";
 	BlazoredVideo video;
 
 	protected override void OnInitialized()
 	{
+		var allOptionsEnabled = new VideoStateOptions() { All = true };
 		foreach (var item in (VideoEvents[])(Enum.GetValues(typeof(VideoEvents))))
 		{
 			if (item != VideoEvents.NotSet)
 			{
+				options[item] = allOptionsEnabled;
 				eventCounter[item] = 0;
 			}
 		}
-		var allOptionsEnabled = new VideoStateOptions() { All = true };
-		options[VideoEvents.Abort] = allOptionsEnabled;
-		options[VideoEvents.CanPlay] = allOptionsEnabled;
-		options[VideoEvents.CanPlayThrough] = allOptionsEnabled;
-		options[VideoEvents.DurationChange] = allOptionsEnabled;
-		options[VideoEvents.Emptied] = allOptionsEnabled;
-		options[VideoEvents.Ended] = allOptionsEnabled;
-		options[VideoEvents.Error] = allOptionsEnabled;
-		options[VideoEvents.LoadedData] = allOptionsEnabled;
-		options[VideoEvents.LoadedMetadata] = allOptionsEnabled;
-		options[VideoEvents.LoadStart] = allOptionsEnabled;
-		options[VideoEvents.Pause] = allOptionsEnabled;
-		options[VideoEvents.Play] = allOptionsEnabled;
-		options[VideoEvents.Playing] = allOptionsEnabled;
-		options[VideoEvents.Progress] = allOptionsEnabled;
-		options[VideoEvents.RateChange] = allOptionsEnabled;
-		options[VideoEvents.Seeked] = allOptionsEnabled;
-		options[VideoEvents.Seeking] = allOptionsEnabled;
-		options[VideoEvents.Stalled] = allOptionsEnabled;
-		options[VideoEvents.Suspend] = allOptionsEnabled;
-		options[VideoEvents.TimeUpdate] = allOptionsEnabled;
-		options[VideoEvents.VolumeChange] = allOptionsEnabled;
-		options[VideoEvents.Waiting] = allOptionsEnabled;
 	}
 	void OnEvent(VideoEventData videoData)
 	{
@@ -132,24 +108,6 @@
 		{
 			eventCounter[videoData.EventName]++;
 		}
-		PausePlayText = GetPauseOrPlay(videoState.Paused);
 		StateHasChanged();
 	}
-
-	string GetPauseOrPlay(bool Paused)
-		=> Paused ? "Play" : "Pause";
-
-	async Task PausePlay()
-	{
-		if (await video.GetPausedAsync())
-		{
-			await video.StartPlayback();
-			await video.SetPosterAsync("./images/elephants2.jpg");
-		}
-		else
-		{
-			await video.PausePlayback();
-		}
-	}
-	Task Reload() => video.ReloadControl();
 }

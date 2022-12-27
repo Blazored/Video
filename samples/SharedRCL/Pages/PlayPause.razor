@@ -1,0 +1,55 @@
+﻿@page "/playpause"
+
+<h1>Blazored Video Demo - Play / Pause Button</h1>
+
+<BlazoredVideo @ref="video"
+			  CanPlay=OnEvent
+			  Ended=OnEvent
+				Pause=OnEvent
+				Play=OnEvent
+				VideoEventOptions="options"
+				class="w-80"
+				autoplay="autoplay"
+				loop="loop"
+				style="max-width:800px;">
+	<source src="video/elephants2.mp4" type="video/mp4" />
+</BlazoredVideo>
+<br/>
+<button class="btn btn-primary" @onclick=PlayOrPause>@PausePlayText</button>
+
+@code {
+	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+	VideoState videoState;
+	string PausePlayText = "Play";
+	BlazoredVideo video;
+
+	protected override void OnInitialized()
+	{
+		var pausedOption = new VideoStateOptions() { Paused = true };
+		options[VideoEvents.CanPlay] = pausedOption;
+		options[VideoEvents.Ended] = pausedOption;
+		options[VideoEvents.Pause] = pausedOption;
+		options[VideoEvents.Play] = pausedOption;
+	}
+	void OnEvent(VideoState videoState)
+	{
+		PausePlayText = videoState.Paused switch
+		{
+			true => "Play",
+			_ => "Pause"
+		};
+		StateHasChanged();
+	}
+
+	async Task PlayOrPause()
+	{
+		if (await video.GetPausedAsync())
+		{
+			await video.StartPlayback();
+		}
+		else
+		{
+			await video.PausePlayback();
+		}
+	}
+}

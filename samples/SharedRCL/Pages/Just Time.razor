@@ -1,6 +1,6 @@
 ﻿@page "/justtime"
 
-<h1>Blazor Video</h1>
+<h1>Blazored Video Demo - One event/one property - time</h1>
 
 <style>
 	.flash0 {
@@ -36,17 +36,10 @@
 		<div class="d-flex flex-column w-100 p-2">
 			<div class="alert-primary">Events</div>
 			<div class="d-flex p-1 m-1 flex-wrap">
-				@foreach (var eventName in Enum.GetNames(typeof(VideoEvents)))
-				{
-					var eventValue = (VideoEvents)Enum.Parse(typeof(VideoEvents), eventName);
-					if (eventCounter.ContainsKey(eventValue))
-					{
-						<div class="d-flex flex-column m-1 p-1 border border-dark">
-							<label class="bg-dark text-white p-1">@eventName</label>
-							<span class="flash@(eventCounter[eventValue] % 2)">@eventCounter[eventValue]</span>
-						</div>
-					}
-				}
+				<div class="d-flex flex-column m-1 p-1 border border-dark">
+					<label class="bg-dark text-white p-1">TimeUpdate</label>
+					<span class="flash@(eventCounter[VideoEvents.TimeUpdate] % 2)">@eventCounter[VideoEvents.TimeUpdate]</span>
+				</div>
 			</div>
 		</div>
 		<div class="d-flex flex-column w-100 p-2">
@@ -54,27 +47,20 @@
 			<div class="d-flex p-1 m-1 flex-wrap">
 				@if (videoState is object)
 				{
-					foreach (var item in typeof(VideoState).GetProperties())
-					{
-						try
-						{
-							<div class="d-flex flex-column m-1 p-1 border border-dark">
-								<label class="bg-dark text-white p-1">@item.Name</label>
-								<span>@item.GetValue(videoState)?.ToString()</span>
-							</div>
-						}
-						catch { }
-					}
+					<div class="d-flex flex-column m-1 p-1 border border-dark">
+						<label class="bg-dark text-white p-1">CurrentTime</label>
+						<span>@videoState.CurrentTime</span>
+					</div>
 				}
 			</div>
 		</div>
 	</div>
 	<div class="d-flex flex-column p-2 align-content-center border border-info">
 		<BlazoredVideo TimeUpdateEvent="OnEvent"
-									VideoEventOptions="options"
-									class="w-100"
-									style="max-width:800px;"
-									controls="controls">
+					VideoEventOptions="options"
+					class="w-100"
+					style="max-width:800px;"
+					controls="controls">
 			<source src="video/elephants2.mp4" type="video/mp4" />
 		</BlazoredVideo>
 
