@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Blazored.Video.Support;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace Blazored.Video.Tests
 {
 	public class VideoDataInflateDeflateTests
 	{
-		readonly JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
+		readonly JsonSerializerOptions options = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
 		[Fact]
 		public void CanBeInflatedFromNothing()
 		{
