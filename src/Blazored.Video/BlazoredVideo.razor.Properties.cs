@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Blazored.Video.Support;
 using Microsoft.JSInterop;
@@ -20,7 +19,7 @@ namespace Blazored.Video
 			get { return GetValue<bool>(); }
 			set { SetValue(value); }
 		}
-		
+
 		/// <summary>
 		///		Returns an AudioTrackList object representing available audio tracks
 		/// </summary>
@@ -75,7 +74,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the default speed of the audio/video playback
 		/// </summary>
-		public double DefaultPlaybackRate 
+		public double DefaultPlaybackRate
 		{
 			get { return GetValue<double>(); }
 		}
@@ -162,7 +161,7 @@ namespace Blazored.Video
 		/// </para>
 		/// </example>
 		/// </summary>
-		public double PlaybackRate 
+		public double PlaybackRate
 		{
 			get { return GetValue<double>(); }
 			set { SetValue(value); }
@@ -199,7 +198,7 @@ namespace Blazored.Video
 			get { return GetValue<string>(); }
 			set { SetValue(value); }
 		}
-		
+
 		/// <summary>
 		///		Returns the current ready state of the audio/video
 		/// </summary>
@@ -232,7 +231,7 @@ namespace Blazored.Video
 			get { return GetValue<string>(); }
 			set { SetValue(value); }
 		}
-		
+
 		[Obsolete("No Browser supports this api yet", true)]
 		public DateTime StartDate
 		{
@@ -246,7 +245,7 @@ namespace Blazored.Video
 		{
 			get { return GetValue<TextTracks>(); }
 		}
-		
+
 		[Obsolete("No Browser supports this api yet", true)]
 		public VideoTracks VideoTracks
 		{
@@ -256,33 +255,33 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the volume of the audio/video
 		/// </summary>
-		public double Volume 
+		public double Volume
 		{
 			get { return GetValue<double>(); }
 			set { SetValue(value); }
 		}
 
-		protected virtual T GetValue<T>([CallerMemberName]string name = null)
+		protected virtual T GetValue<T>([CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
-			if (JS is IJSInProcessRuntime inProcessRuntime)
+			if (jsmodule is IJSInProcessObjectReference inProcessModule)
 			{
-				return inProcessRuntime.Invoke<T>("BlazoredVideo.getProperty", videoRef, payloadName);
+				return inProcessModule.Invoke<T>("getProperty", videoRef, payloadName);
 			}
 
 			throw new Exception($"Synchronous access to property {name} is only allowed in WebAssembly - use Get{name}Async() instead.");
 		}
 
-		protected virtual void SetValue<T>(T value, [CallerMemberName]string name = null)
+		protected virtual void SetValue<T>(T value, [CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
-			if (JS is IJSInProcessRuntime inProcessRuntime)
+			if (jsmodule is IJSInProcessObjectReference inProcessModule)
 			{
-				inProcessRuntime.InvokeVoid("BlazoredVideo.setProperty", videoRef, payloadName, value);
+				inProcessModule.InvokeVoid("setProperty", videoRef, payloadName, value);
 				return;
 			}
 
-            throw new Exception($"Synchronous access to property {name} is only allowed in WebAssembly - use Set{name}Async() instead.");
-        }
-    }
+			throw new Exception($"Synchronous access to property {name} is only allowed in WebAssembly - use Set{name}Async() instead.");
+		}
+	}
 }

@@ -7,13 +7,14 @@ using Blazored.Video.Support;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using Microsoft.JSInterop.Implementation;
 
 namespace Blazored.Video
 {
 	/// <summary>
 	/// Wraps an html5 <code>video</code> element and enables event handling
 	/// </summary>
-	public partial class BlazoredVideo
+	public partial class BlazoredVideo : IAsyncDisposable
 	{
 		[Inject]
 		ILoggerFactory LoggerFactory { get; set; }
@@ -44,7 +45,7 @@ namespace Blazored.Video
 
 		/// <summary>
 		/// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
-		/// When set to true, please include the script in your index/_Host page <code>&lt;script src="_content/Blazored.Video/blazoredVideo.js"&gt;&lt;/script&gt;</code>
+		/// When set to true, please include the script in your index/_Host page
 		/// </summary>
 		[Parameter] public bool UseExternalJavaScript { get; set; } = false;
 
@@ -53,14 +54,11 @@ namespace Blazored.Video
 #pragma warning disable CS0414
 		protected ElementReference videoRef;
 		protected bool Configured = false;
+		private IJSObjectReference jsmodule;
 #pragma warning restore CS0414
 #pragma warning restore CS0649
 		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
 
-		/// <summary>
-		/// Configure the events and the data payload requested
-		/// TODO: consider if this can/should happen in OnSetParameters() so they can change?
-		/// </summary>
 		protected override void OnInitialized()
 		{
 			if (Attributes.TryGetValue("id", out object Id))
@@ -74,9 +72,12 @@ namespace Blazored.Video
 			await base.OnAfterRenderAsync(firstRender);
 			if (firstRender)
 			{
+				await ImportJavaScript();
 				await ConfigureEvents();
 			}
 		}
+
+		private async Task ImportJavaScript() => jsmodule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Blazored.Video/blazoredVideo.js");
 
 		protected virtual async Task ConfigureEvents()
 		{
@@ -184,7 +185,7 @@ namespace Blazored.Video
 			VideoEventOptions?.TryGetValue(eventName, out options);
 			try
 			{
-				await JS.InvokeVoidAsync("BlazoredVideo.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+				await jsmodule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 			}
 			catch
 			{
@@ -332,5 +333,12 @@ namespace Blazored.Video
 		bool RegisterVolumeChange => VolumeChangeEventRequired || VolumeChangeRequired;
 		bool RegisterWaiting => WaitingEventRequired || WaitingRequired;
 
+		async ValueTask IAsyncDisposable.DisposeAsync()
+		{
+			if (jsmodule is not null)
+			{
+				await jsmodule.DisposeAsync();
+			}
+		}
 	}
 }

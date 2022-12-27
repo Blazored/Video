@@ -19,10 +19,4 @@
 		}
 	}
 *@
-@if (!Configured && !UseExternalJavaScript)
-{
-	Configured = true;
-	<script suppress-error="BL9992" src="_content/Blazored.Video/blazoredVideo.js"></script>
-	StateHasChanged();
-}
 <video id="@UniqueKey" @key="UniqueKey" @ref="videoRef" @attributes=@Attributes @onchange=@OnChange>@ChildContent</video>
