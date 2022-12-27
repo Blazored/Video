@@ -234,41 +234,41 @@ namespace Blazored.Video
 		protected virtual ValueTask<T> GetValueAsync<T>([CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatGetSetAsyncAsPayload(name);
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				return ValueTask.FromResult(inProcessModule.Invoke<T>("getProperty", videoRef, payloadName));
 			}
 
-			return jsmodule.InvokeAsync<T>("getProperty", videoRef, payloadName);
+			return jsModule.InvokeAsync<T>("getProperty", videoRef, payloadName);
 		}
 
 		protected virtual ValueTask SetValueAsync<T>(T value, [CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatGetSetAsyncAsPayload(name);
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				inProcessModule.InvokeVoid("setProperty", videoRef, payloadName, value);
 				return ValueTask.CompletedTask;
 			}
 
-			return jsmodule.InvokeVoidAsync("setProperty", videoRef, payloadName, value);
+			return jsModule.InvokeVoidAsync("setProperty", videoRef, payloadName, value);
 		}
 		protected virtual ValueTask DoInvokeAsync(string method)
 		{
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				inProcessModule.InvokeVoid("invoke", videoRef, method);
 				return ValueTask.CompletedTask;
 			}
-			return jsmodule.InvokeVoidAsync("invoke", videoRef, method);
+			return jsModule.InvokeVoidAsync("invoke", videoRef, method);
 		}
 		protected virtual ValueTask<T> DoInvokeAsync<T>(string method, params object[] parameters)
 		{
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				return ValueTask.FromResult(inProcessModule.Invoke<T>("invoke", videoRef, method, parameters));
 			}
-			return jsmodule.InvokeAsync<T>("invoke", videoRef, method, parameters);
+			return jsModule.InvokeAsync<T>("invoke", videoRef, method, parameters);
 		}
 	}
 }

@@ -7,7 +7,6 @@ using Blazored.Video.Support;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Microsoft.JSInterop.Implementation;
 
 namespace Blazored.Video
 {
@@ -47,17 +46,17 @@ namespace Blazored.Video
 		/// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
 		/// When set to true, please include the script in your index/_Host page
 		/// </summary>
-		[Parameter] public bool UseExternalJavaScript { get; set; } = false;
+		[Parameter, Obsolete(message: "This component now uses a JS module.")] public bool UseExternalJavaScript { get; set; } = false;
 
 		protected string UniqueKey = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
 		protected ElementReference videoRef;
-		protected bool Configured = false;
-		private IJSObjectReference jsmodule;
+		protected IJSObjectReference jsModule;
 #pragma warning restore CS0414
 #pragma warning restore CS0649
-		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
+		private readonly JsonSerializerOptions serializationOptions
+			= new() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
 
 		protected override void OnInitialized()
 		{
@@ -77,7 +76,7 @@ namespace Blazored.Video
 			}
 		}
 
-		private async Task ImportJavaScript() => jsmodule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Blazored.Video/blazoredVideo.js");
+		private async Task ImportJavaScript() => jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Blazored.Video/blazoredVideo.js");
 
 		protected virtual async Task ConfigureEvents()
 		{
@@ -185,7 +184,7 @@ namespace Blazored.Video
 			VideoEventOptions?.TryGetValue(eventName, out options);
 			try
 			{
-				await jsmodule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+				await jsModule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 			}
 			catch
 			{
@@ -335,9 +334,18 @@ namespace Blazored.Video
 
 		async ValueTask IAsyncDisposable.DisposeAsync()
 		{
-			if (jsmodule is not null)
+			await DisposeAsyncCore().ConfigureAwait(false);
+			GC.SuppressFinalize(this);
+		}
+		/// <summary>
+		/// You must call <see cref="DisposeAsyncCore"/> when this method is overridden or you will have memory leaks.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual async ValueTask DisposeAsyncCore()
+		{
+			if (jsModule is not null)
 			{
-				await jsmodule.DisposeAsync();
+				await jsModule.DisposeAsync().ConfigureAwait(false);
 			}
 		}
 	}

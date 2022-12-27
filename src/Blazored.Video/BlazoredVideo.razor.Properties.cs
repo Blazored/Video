@@ -264,7 +264,7 @@ namespace Blazored.Video
 		protected virtual T GetValue<T>([CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				return inProcessModule.Invoke<T>("getProperty", videoRef, payloadName);
 			}
@@ -275,7 +275,7 @@ namespace Blazored.Video
 		protected virtual void SetValue<T>(T value, [CallerMemberName] string name = null)
 		{
 			var payloadName = VideoStateOptionsExt.FormatAsPayload(name);
-			if (jsmodule is IJSInProcessObjectReference inProcessModule)
+			if (jsModule is IJSInProcessObjectReference inProcessModule)
 			{
 				inProcessModule.InvokeVoid("setProperty", videoRef, payloadName, value);
 				return;
