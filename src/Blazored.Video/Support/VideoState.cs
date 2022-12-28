@@ -125,5 +125,9 @@ namespace Blazored.Video.Support
 		/// Returns the volume of the audio/video
 		/// </summary>
 		public double Volume { get; set; }
+		/// <summary>
+		/// The video element id
+		/// </summary>
+		public string Id { get; set; }
 	}
 }

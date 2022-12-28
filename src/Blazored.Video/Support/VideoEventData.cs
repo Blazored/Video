@@ -9,6 +9,7 @@ namespace Blazored.Video.Support
 	/// </summary>
 	public class VideoEventData
 	{
+		public string Id { get; set; }
 		public string Name { get; set; } = VideoEvents.NotSet.ToString();
 		public VideoEvents EventName =>
 			(VideoEvents)Enum.Parse(typeof(VideoEvents), Name, true);

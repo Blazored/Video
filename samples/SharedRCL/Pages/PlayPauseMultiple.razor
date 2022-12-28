@@ -31,6 +31,11 @@
 </BlazoredVideo>
 <br/>
 <button class="btn btn-primary" @onclick=@(async ()=>await PlayOrPause(video2))>@PausePlayText2</button>
+<br/>
+@if (video1 is BlazoredVideo && video2 is BlazoredVideo && id is string)
+{
+	@: Last event was for video @(video1.UniqueKey==id ? 1 : 2)
+}
 
 @code {
 	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
@@ -39,6 +44,7 @@
 	string PausePlayText2 = "Pause";
 	BlazoredVideo video1;
 	BlazoredVideo video2;
+	string id;
 
 	protected override void OnInitialized()
 	{
@@ -50,6 +56,7 @@
 	}
 	void OnEvent(ref string PausePlayText, VideoState videoState)
 	{
+		id = videoState.Id;
 		PausePlayText = videoState.Paused switch
 		{
 			true => "Play",
