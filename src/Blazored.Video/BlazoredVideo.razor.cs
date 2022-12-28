@@ -48,7 +48,7 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter, Obsolete(message: "This component now uses a JS module.")] public bool UseExternalJavaScript { get; set; } = false;
 
-		protected string UniqueKey = Guid.NewGuid().ToString("N");
+		public string UniqueKey { get; private set; } = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
 		protected ElementReference videoRef;
