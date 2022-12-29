@@ -66,11 +66,11 @@ namespace Blazored.Video
 		/// <summary>
 		///		returns the current playback position in the audio/video (in seconds)
 		/// </summary>
-		public ValueTask<int> GetCurrentTimeAsync() => GetValueAsync<int>();
+		public ValueTask<double> GetCurrentTimeAsync() => GetValueAsync<double>();
 		/// <summary>
 		///		Sets the current playback position in the audio/video (in seconds)
 		/// </summary>
-		public ValueTask SetCurrentTimeAsync(int value) => SetValueAsync(value);
+		public ValueTask SetCurrentTimeAsync(double value) => SetValueAsync(value);
 
 		/// <summary>
 		///		returns whether the audio/video should be muted by default

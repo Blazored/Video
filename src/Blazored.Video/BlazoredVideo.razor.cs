@@ -204,6 +204,8 @@ namespace Blazored.Video
 			try
 			{
 				videoData = JsonSerializer.Deserialize<VideoEventData>(ThisEvent, serializationOptions);
+				videoData.Video = this;
+				videoData.State.Video = this;
 			}
 			catch (Exception ex)
 			{

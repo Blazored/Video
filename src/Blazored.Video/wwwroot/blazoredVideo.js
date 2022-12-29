@@ -52,7 +52,7 @@ export function invoke(el, name, ...args) {
 		return el[name](...args);
 	} catch (e) {
 		console.error(e);
-		return null;
+		return Promise.resolve();
 	}
 }
 export function registerCustomEventHandler(el, eventName, payload) {
