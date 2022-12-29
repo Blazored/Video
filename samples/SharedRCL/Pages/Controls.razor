@@ -1,0 +1,142 @@
+﻿@page "/controls"
+
+<h1>Blazored Video Demo - Play / Pause Button</h1>
+<div class="d-flex flex-row p-2" style="max-width: 95%;">
+	<BlazoredVideo @ref="video"
+				 CanPlay=OnEvent
+				 Ended=OnEvent
+				 Pause=OnEvent
+				 Play=OnEvent
+				 TimeUpdate=OnEvent
+				 VolumeChange=OnEvent
+				 VideoEventOptions="options"
+				 autoplay="autoplay"
+				 loop="loop"
+				 class="w-75">
+		<source src="video/elephants2.mp4" type="video/mp4" />
+	</BlazoredVideo>
+	<div @key="1" class="d-flex flex-column w-25 p-2">
+		<button class="btn btn-primary" @onclick=PlayOrPause>@PausePlayText</button>
+		<fieldset title="" class="d-flex flex-column mt-2">
+			<label for="volume">Volume @(volume * 10)</label>
+			<input id="volume" type="range" value=@volume @onchange=SetVolume min=0 max=1 step=0.1 list="steplist" />
+			<datalist id="steplist">
+				@for (var step = 0.0; step < 1.0; step += 0.1)
+				{
+					<option>@step</option>
+				}
+			</datalist>
+		</fieldset>
+		<fieldset title="" class="d-flex flex-column mt-2 ">
+			<label for="currentTime">Time @currentTime.ToString("0.00") (s)</label>
+			<input @key="2" id=@("currentTime") type="range" value=@currentTime min="0" max=@(Math.Ceiling(maxTime)) step="1" list="timelist" @onkeydown=ChangingTime @onpointerdown=ChangingTime @onchange=SetCurrentTime />
+			<datalist id="timelist">
+				@for (var step = 0; step <= Math.Ceiling(maxTime); step += 1)
+				{
+					<option>@step</option>
+				}
+			</datalist>
+		</fieldset>
+		<fieldset title="" class="form-check form-check-inline">
+			<label for="loop" class="pt-2">Loop ?</label>
+			<input type="checkbox" value=@looping class="ml-1" @onchange=SetLooping />
+		</fieldset>
+	</div>
+</div>
+@code {
+	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+	VideoState videoState;
+	string PausePlayText = "Play";
+	double volume = 0, maxTime = 10, currentTime = 0;
+	bool isSettingTime = false, looping = true;
+	BlazoredVideo video;
+
+	protected override void OnInitialized()
+	{
+		var payloadOptions = new VideoStateOptions()
+			{
+				Paused = true,
+				Volume = true,
+				CurrentTime = true,
+				Duration = true,
+			};
+		options[VideoEvents.CanPlay] = payloadOptions;
+		options[VideoEvents.Ended] = payloadOptions;
+		options[VideoEvents.Pause] = payloadOptions;
+		options[VideoEvents.Play] = payloadOptions;
+		options[VideoEvents.VolumeChange] = payloadOptions;
+		options[VideoEvents.TimeUpdate] = payloadOptions;
+	}
+	void OnEvent(VideoState videoState)
+	{
+		PausePlayText = videoState.Paused switch
+		{
+			true => "Play",
+			_ => "Pause"
+		};
+		volume = videoState.Volume;
+		// Because the input for current time is databound, it can change while the user is
+		// also changing it - so don't refresh while they are actively changing the value
+		if (!isSettingTime)
+		{
+			currentTime = videoState.CurrentTime;
+			maxTime = videoState.Duration;
+			StateHasChanged();
+		}
+	}
+
+	async Task PlayOrPause()
+	{
+		if (await video.GetPausedAsync())
+		{
+			await video.StartPlayback();
+		}
+		else
+		{
+			await video.PausePlayback();
+		}
+	}
+
+	async Task SetVolume(ChangeEventArgs args)
+	{
+		if (video is null)
+			return;
+
+		if (double.TryParse(args.Value.ToString(), out volume))
+			await video.SetVolumeAsync(Math.Clamp(volume, 0.0, 1.0));
+	}
+	void ChangingTime()
+	{
+		// Because the input for current time is databound, it can change while the user is
+		// also changing it - so we don't refresh while they are actively changing the value
+		isSettingTime = true;
+	}
+
+	async Task SetCurrentTime(ChangeEventArgs args)
+	{
+		if (video is null)
+			return;
+
+		var paused = await video.GetPausedAsync();
+		if (!paused) await video.PausePlayback();
+
+		if (double.TryParse(args.Value.ToString(), out double newTime))
+		{
+			currentTime = newTime;
+			await video.SetCurrentTimeAsync(Math.Clamp(newTime, 0.0, maxTime));
+			currentTime = newTime;
+		}
+
+		if (!paused && await video.GetPausedAsync()) await video.StartPlayback();
+		isSettingTime = false;
+	}
+
+	async Task SetLooping(ChangeEventArgs args)
+	{
+		if (video is null)
+			return;
+
+		if (bool.TryParse(args.Value.ToString(), out looping))
+			await video.SetLoopAsync(looping);
+	}
+}
