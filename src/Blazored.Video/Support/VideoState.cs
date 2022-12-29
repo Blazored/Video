@@ -129,5 +129,9 @@ namespace Blazored.Video.Support
 		/// The video element id
 		/// </summary>
 		public string Id { get; set; }
+		/// <summary>
+		/// Reference to the component
+		/// </summary>
+		public BlazoredVideo Video { get; set; }
 	}
 }
