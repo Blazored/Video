@@ -23,8 +23,7 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<PackageReleaseNotes>Initial Release</PackageReleaseNotes>
-		<Version>1.2.0-beta</Version>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	
 	</PropertyGroup>
 
 	<ItemGroup>
