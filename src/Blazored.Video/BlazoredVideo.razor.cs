@@ -42,12 +42,6 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter] public Dictionary<VideoEvents, VideoStateOptions> VideoEventOptions { get; set; }
 
-		/// <summary>
-		/// Should the Video component rely on the developer to load the JavaScript (= true) or load it automatically (= false *default)
-		/// When set to true, please include the script in your index/_Host page
-		/// </summary>
-		[Parameter, Obsolete(message: "This component now uses a JS module.")] public bool UseExternalJavaScript { get; set; } = false;
-
 		public string UniqueKey { get; private set; } = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
@@ -173,11 +167,9 @@ namespace Blazored.Video
 		}
 
 		/// <summary>
-		/// This is where we generate the markup required to make events work.
+		/// Register for event handling on our video element
 		/// </summary>
 		/// <param name="eventName">The DOM event name e.g. play, pause etc</param>
-		/// <param name="payloadName">In case someone wants to change it. Don't though.</param>
-		/// <returns>A string containing JS code for the event handler</returns>
 		async Task Implement(VideoEvents eventName)
 		{
 			VideoStateOptions options = default;
@@ -186,9 +178,11 @@ namespace Blazored.Video
 			{
 				await jsModule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 			}
-			catch
-			{
-				// if we are self registering the JS code, there can be a delay before it is ready
+      catch (Exception ex)
+      {
+				LoggerFactory
+					.CreateLogger(nameof(BlazoredVideo))
+          .LogError(ex, "Failed to register an event handler for {0}", eventName);
 			}
 		}
 
