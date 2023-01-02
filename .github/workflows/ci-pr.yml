@@ -27,4 +27,4 @@ jobs:
       run: dotnet build --configuration Release --no-restore src/$PROJECT_NAME/$PROJECT_NAME.csproj
 
     - name: Test Video
-      run: dotnet test -c Release --no-restore --verbosity normal tests/Blazored.$PROJECT_NAME.Tests
+      run: dotnet test -c Release --no-restore --verbosity normal tests/$PROJECT_NAME.Tests
