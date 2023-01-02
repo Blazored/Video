@@ -1,0 +1,12 @@
+﻿@page "/startat"
+
+<h1>Blazored Video Demo - Start at specific time</h1>
+<p>This is not a feature of this component - it is standard for the HTML video element. You just add <code>#t=x</code> to the video URL where <code>x</code> is the time.</p>
+<p>This demo uses <code>#t=5</code></p>
+<BlazoredVideo 
+				class="w-100"
+				style="max-width:800px;"
+				controls="controls">
+	<source src="video/elephants2.mp4#t=5" type="video/mp4" /><!-- adding #t=5 to the url indicates we want to start at 5 seconds in the timeline -->
+</BlazoredVideo>
+

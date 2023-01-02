@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Blazored.Video.Support
 {
@@ -29,5 +30,10 @@ namespace Blazored.Video.Support
 		/// get or set if the track is active(true|false)
 		/// </summary>
 		public bool Selected { get; set; }
+	}
+
+	public class VideoTracks : List<VideoTrack>
+	{
+
 	}
 }

@@ -1,0 +1,91 @@
+﻿@page "/justtime"
+
+<h1>Blazored Video Demo - One event/one property - time</h1>
+
+<style>
+	.flash0 {
+			animation: FLASH0 200ms ease-in-out;
+	}
+
+	.flash1 {
+			animation: FLASH1 200ms ease-in-out;
+	}
+
+	@@keyframes FLASH0 {
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
+
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
+	}
+
+	@@keyframes FLASH1 {
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
+
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
+	}
+</style>
+<div class="d-flex align-items-start justify-content-center">
+	<div class="d-flex flex-column w-100 p-2">
+		<div class="d-flex flex-column w-100 p-2">
+			<div class="alert-primary">Events</div>
+			<div class="d-flex p-1 m-1 flex-wrap">
+				<div class="d-flex flex-column m-1 p-1 border border-dark">
+					<label class="bg-dark text-white p-1">TimeUpdate</label>
+					<span class="flash@(eventCounter[VideoEvents.TimeUpdate] % 2)">@eventCounter[VideoEvents.TimeUpdate]</span>
+				</div>
+			</div>
+		</div>
+		<div class="d-flex flex-column w-100 p-2">
+			<div class="alert-primary">State</div>
+			<div class="d-flex p-1 m-1 flex-wrap">
+				@if (videoState is object)
+				{
+					<div class="d-flex flex-column m-1 p-1 border border-dark">
+						<label class="bg-dark text-white p-1">CurrentTime</label>
+						<span>@videoState.CurrentTime</span>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="d-flex flex-column p-2 align-content-center border border-info">
+		<BlazoredVideo TimeUpdateEvent="OnEvent"
+					VideoEventOptions="options"
+					class="w-100"
+					style="max-width:800px;"
+					controls="controls">
+			<source src="video/elephants2.mp4" type="video/mp4" />
+		</BlazoredVideo>
+
+	</div>
+</div>
+
+@code {
+	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+	VideoState videoState;
+	Dictionary<VideoEvents, int> eventCounter = new Dictionary<VideoEvents, int>();
+
+	protected override void OnInitialized()
+	{
+		foreach (var item in (VideoEvents[])(Enum.GetValues(typeof(VideoEvents))))
+		{
+			if (item != VideoEvents.NotSet)
+			{
+				eventCounter[item] = 0;
+			}
+		}
+		options[VideoEvents.TimeUpdate] = new VideoStateOptions { CurrentTime = true };
+	}
+	void OnEvent(VideoState state)
+	{
+		videoState = state;
+		eventCounter[VideoEvents.TimeUpdate]++;
+	}
+}

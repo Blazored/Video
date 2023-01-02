@@ -9,9 +9,26 @@ namespace Blazored.Video.Support
 	/// </summary>
 	public class VideoEventData
 	{
+		/// <summary>
+		/// The video element id
+		/// </summary>
+		public string Id { get; set; }
+		/// <summary>
+		/// The <see cref="EventName"/> as a string
+		/// </summary>
 		public string Name { get; set; } = VideoEvents.NotSet.ToString();
+		/// <summary>
+		/// The <see cref="VideoEvents"/> Event name
+		/// </summary>
 		public VideoEvents EventName =>
 			(VideoEvents)Enum.Parse(typeof(VideoEvents), Name, true);
+		/// <summary>
+		/// The video player state
+		/// </summary>
 		public VideoState State { get; set; }
+		/// <summary>
+		/// Reference to the component
+		/// </summary>
+		public BlazoredVideo Video { get; set; }
 	}
 }

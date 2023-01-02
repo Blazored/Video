@@ -1,0 +1,113 @@
+﻿@page "/"
+
+<h1>Blazored Video Demo - All events and all state monitored</h1>
+
+<style>
+	.flash0 {
+			animation: FLASH0 200ms ease-in-out;
+	}
+
+	.flash1 {
+			animation: FLASH1 200ms ease-in-out;
+	}
+
+	@@keyframes FLASH0 {
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
+
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
+	}
+
+	@@keyframes FLASH1 {
+			0% {
+					background-color: rgba(255, 216, 0, 0.8);
+			}
+
+			100% {
+					background-color: rgba(255, 216, 0, 0);
+			}
+	}
+</style>
+<div class="d-flex align-items-start justify-content-center">
+	<div class="d-flex flex-column w-100 p-2">
+		<div class="d-flex flex-column w-100 p-2">
+			<div class="alert-primary">Events</div>
+			<div class="d-flex p-1 m-1 flex-wrap">
+				@foreach (var eventName in Enum.GetNames(typeof(VideoEvents)))
+				{
+					var eventValue = (VideoEvents)Enum.Parse(typeof(VideoEvents), eventName);
+					if (eventCounter.ContainsKey(eventValue))
+					{
+						<div class="d-flex flex-column m-1 p-1 border border-dark">
+							<label class="bg-dark text-white p-1">@eventName</label>
+							<span class="flash@(eventCounter[eventValue] % 2)">@eventCounter[eventValue]</span>
+						</div>
+					}
+				}
+			</div>
+		</div>
+		<div class="d-flex flex-column w-100 p-2">
+			<div class="alert-primary">State</div>
+			<div class="d-flex p-1 m-1 flex-wrap">
+				@if (videoState is object)
+				{
+					foreach (var item in typeof(VideoState).GetProperties())
+					{
+						try
+						{
+							<div class="d-flex flex-column m-1 p-1 border border-dark">
+								<label class="bg-dark text-white p-1">@item.Name</label>
+								<span>@item.GetValue(videoState)?.ToString()</span>
+							</div>
+						}
+						catch { }
+					}
+				}
+			</div>
+		</div>
+	</div>
+	<div class="d-flex flex-column p-2 align-content-center border border-info">
+		<BlazoredVideo @ref="video" 
+									EventFired="OnEvent"
+									VideoEventOptions="options"
+									class="w-100"
+									autoplay="autoplay"
+									loop="loop"
+									style="max-width:800px;"
+									controls="controls">
+			<source src="video/elephants2.mp4" type="video/mp4" />
+		</BlazoredVideo>
+	</div>
+</div>
+
+@code {
+	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+	VideoState videoState;
+	Dictionary<VideoEvents, int> eventCounter = new Dictionary<VideoEvents, int>();
+	BlazoredVideo video;
+
+	protected override void OnInitialized()
+	{
+		var allOptionsEnabled = new VideoStateOptions() { All = true };
+		foreach (var item in (VideoEvents[])(Enum.GetValues(typeof(VideoEvents))))
+		{
+			if (item != VideoEvents.NotSet)
+			{
+				options[item] = allOptionsEnabled;
+				eventCounter[item] = 0;
+			}
+		}
+	}
+	void OnEvent(VideoEventData videoData)
+	{
+		videoState = videoData.State;
+		if (videoData.EventName != VideoEvents.NotSet)
+		{
+			eventCounter[videoData.EventName]++;
+		}
+		StateHasChanged();
+	}
+}

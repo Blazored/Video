@@ -1,0 +1,79 @@
+﻿@page "/multiple"
+
+<h1>Blazored Video Demo - Multiple Videos</h1>
+
+<BlazoredVideo @ref="video1"
+			  CanPlay=@(s=>OnEvent(ref PausePlayText1,s))
+			  Ended=@(s=>OnEvent(ref PausePlayText1,s))
+				Pause=@(s=>OnEvent(ref PausePlayText1,s))
+				Play=@(s=>OnEvent(ref PausePlayText1,s))
+				VideoEventOptions="options"
+				class="w-40"
+				autoplay="autoplay"
+				loop="loop"
+				style="max-width:300px;">
+	<source src="video/elephants2.mp4#t=3" type="video/mp4" />
+</BlazoredVideo>
+<br/>
+<button class="btn btn-primary" @onclick=@(async ()=>await PlayOrPause(video1))>@PausePlayText1</button>
+<br />
+<BlazoredVideo @ref="video2"
+			  CanPlay=@(s=>OnEvent(ref PausePlayText2,s))
+			  Ended=@(s=>OnEvent(ref PausePlayText2,s))
+				Pause=@(s=>OnEvent(ref PausePlayText2,s))
+				Play=@(s=>OnEvent(ref PausePlayText2,s))
+				VideoEventOptions="options"
+				class="w-40 mt-2"
+				autoplay="autoplay"
+				loop="loop"
+				style="max-width:300px;">
+	<source src="video/elephants2.mp4#t=5" type="video/mp4" />
+</BlazoredVideo>
+<br/>
+<button class="btn btn-primary" @onclick=@(async ()=>await PlayOrPause(video2))>@PausePlayText2</button>
+<br/>
+@if (video1 is BlazoredVideo && video2 is BlazoredVideo && id is string)
+{
+	@: Last event was for video @(video1.UniqueKey==id ? 1 : 2)
+}
+
+@code {
+	Dictionary<VideoEvents, VideoStateOptions> options = new Dictionary<VideoEvents, VideoStateOptions>();
+	VideoState videoState;
+	string PausePlayText1 = "Pause";
+	string PausePlayText2 = "Pause";
+	BlazoredVideo video1;
+	BlazoredVideo video2;
+	string id;
+
+	protected override void OnInitialized()
+	{
+		var pausedOption = new VideoStateOptions() { Paused = true };
+		options[VideoEvents.CanPlay] = pausedOption;
+		options[VideoEvents.Ended] = pausedOption;
+		options[VideoEvents.Pause] = pausedOption;
+		options[VideoEvents.Play] = pausedOption;
+	}
+	void OnEvent(ref string PausePlayText, VideoState videoState)
+	{
+		id = videoState.Id;
+		PausePlayText = videoState.Paused switch
+		{
+			true => "Play",
+			_ => "Pause"
+		};
+		StateHasChanged();
+	}
+
+	async Task PlayOrPause(BlazoredVideo video)
+	{
+		if (await video.GetPausedAsync())
+		{
+			await video.StartPlayback();
+		}
+		else
+		{
+			await video.PausePlayback();
+		}
+	}
+}

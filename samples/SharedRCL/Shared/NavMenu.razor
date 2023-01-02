@@ -1,0 +1,57 @@
+﻿@using System.Runtime.InteropServices
+<div class="top-row pl-4 navbar navbar-dark">
+	<a class="navbar-brand" href="">Blazor 
+		@if(RuntimeInformation.RuntimeIdentifier ==	"browser-wasm")
+		{
+			@:WASM
+		}
+		else
+		{
+			@:Server
+		}
+	</a>
+	<button class="navbar-toggler" @onclick="ToggleNavMenu">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+	<ul class="nav flex-column">
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+				<span class="oi oi-home" aria-hidden="true"></span> All Events/All Properties
+			</NavLink>
+		</li>
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="justtime">
+				<span class="oi oi-plus" aria-hidden="true"></span> Single Event/Single Property
+			</NavLink>
+		</li>
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="controls">
+				<span class="oi oi-plus" aria-hidden="true"></span> Controls Demo
+			</NavLink>
+		</li>
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="startat">
+				<span class="oi oi-plus" aria-hidden="true"></span> Start At Position
+			</NavLink>
+		</li>
+		<li class="nav-item px-3">
+			<NavLink class="nav-link" href="multiple">
+				<span class="oi oi-plus" aria-hidden="true"></span> Multiple Videos
+			</NavLink>
+		</li>
+	</ul>
+</div>
+
+@code {
+	private bool collapseNavMenu = true;
+
+	private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+	private void ToggleNavMenu()
+	{
+		collapseNavMenu = !collapseNavMenu;
+	}
+}

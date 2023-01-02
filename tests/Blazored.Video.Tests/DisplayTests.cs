@@ -1,5 +1,5 @@
-﻿using Bunit;
-using Bunit.TestDoubles.JSInterop;
+﻿using System;
+using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using static Bunit.ComponentParameterFactory;
@@ -10,8 +10,8 @@ namespace Blazored.Video.Tests
 	{
 		public DisplayTests()
 		{
-			Services.AddMockJSRuntime();
 			Services.AddLogging();
+			JSInterop.SetupModule("./_content/Blazored.Video/blazoredVideo.js");
 		}
 
 		[Fact]
@@ -31,7 +31,7 @@ namespace Blazored.Video.Tests
 			// Arrange			
 			// Act
 			var cut = RenderComponent<BlazoredVideo>(
-				ChildContent("<source src=\"https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4\" type=\"video/mp4\" />")
+				ChildContent("<source src=\"videos/elephants2.mp4\" type=\"video/mp4\" />")
 				);
 
 			// Assert
@@ -46,36 +46,12 @@ namespace Blazored.Video.Tests
 			var cut = RenderComponent<BlazoredVideo>(
 				("id","test1"),
 				("class","testclass"),
-				ChildContent("<source src=\"https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4\" type=\"video/mp4\" />")
+				ChildContent("<source src=\"videos/elephants2.mp4\" type=\"video/mp4\" />")
 				);
 
 			// Assert
 			Assert.Equal(1, cut.FindAll("video[id='test1']").Count);
 			Assert.Equal(1, cut.FindAll("video[class='testclass']").Count);
-		}
-
-		[Fact]
-		public void ScripTagRenders()
-		{
-			// Arrange			
-			// Act
-			var cut = RenderComponent<BlazoredVideo>(
-				);
-
-			// Assert
-			Assert.Equal(1, cut.FindAll("script").Count);
-		}
-
-		[Fact]
-		public void ScripTagIsRemovedAfterInitialRender()
-		{
-			// Arrange			
-			// Act
-			var cut = RenderComponent<BlazoredVideo>(
-				);
-			cut.Render();
-			// Assert
-			Assert.Equal(0, cut.FindAll("script").Count);
 		}
 	}
 }

@@ -1,22 +1,25 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Blazored.Video.Support;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace Blazored.Video
 {
 	/// <summary>
 	/// Wraps an html5 <code>video</code> element and enables event handling
 	/// </summary>
-	public partial class BlazoredVideo
+	public partial class BlazoredVideo : IAsyncDisposable
 	{
-		[Inject] ILoggerFactory LoggerFactory { get; set; }
-		[Inject] IJSRuntime JS { get; set; }
+		[Inject]
+		ILoggerFactory LoggerFactory { get; set; }
+
+		[Inject]
+		protected IJSRuntime JS { get; set; }
 
 		/// <summary>
 		/// Allows you to put the same content inside this component as you would 
@@ -39,19 +42,16 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter] public Dictionary<VideoEvents, VideoStateOptions> VideoEventOptions { get; set; }
 
-		private string UniqueKey = Guid.NewGuid().ToString("N");
+		public string UniqueKey { get; private set; } = Guid.NewGuid().ToString("N");
 #pragma warning disable CS0649
 #pragma warning disable CS0414
-		private ElementReference videoRef;
-		private bool Configured = false;
+		protected ElementReference videoRef;
+		protected IJSObjectReference jsModule;
 #pragma warning restore CS0414
 #pragma warning restore CS0649
-		private readonly JsonSerializerOptions serializationOptions = new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true };
+		private readonly JsonSerializerOptions serializationOptions
+			= new() { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNameCaseInsensitive = true };
 
-		/// <summary>
-		/// Configure the events and the data payload requested
-		/// TODO: consider if this can/should happen in OnSetParameters() so they can change?
-		/// </summary>
 		protected override void OnInitialized()
 		{
 			if (Attributes.TryGetValue("id", out object Id))
@@ -65,13 +65,15 @@ namespace Blazored.Video
 			await base.OnAfterRenderAsync(firstRender);
 			if (firstRender)
 			{
+				await ImportJavaScript();
 				await ConfigureEvents();
 			}
 		}
 
-		private async Task ConfigureEvents()
-		{
+		private async Task ImportJavaScript() => jsModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Blazored.Video/blazoredVideo.js");
 
+		protected virtual async Task ConfigureEvents()
+		{
 			var registerAllEvents = RegisterEventFired;
 
 			if (registerAllEvents || RegisterAbort)
@@ -165,17 +167,23 @@ namespace Blazored.Video
 		}
 
 		/// <summary>
-		/// This is where we generate the markup required to make events work.
-		/// TODO: Move the JS code to a script and make a simple call here?
+		/// Register for event handling on our video element
 		/// </summary>
 		/// <param name="eventName">The DOM event name e.g. play, pause etc</param>
-		/// <param name="payloadName">In case someone wants to change it. Don't though.</param>
-		/// <returns>A string containing JS code for the event handler</returns>
 		async Task Implement(VideoEvents eventName)
 		{
 			VideoStateOptions options = default;
 			VideoEventOptions?.TryGetValue(eventName, out options);
-			await JS.InvokeVoidAsync("Blazored.registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			try
+			{
+				await jsModule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
+			}
+      catch (Exception ex)
+      {
+				LoggerFactory
+					.CreateLogger(nameof(BlazoredVideo))
+          .LogError(ex, "Failed to register an event handler for {0}", eventName);
+			}
 		}
 
 		/// <summary>
@@ -183,13 +191,15 @@ namespace Blazored.Video
 		/// We force one and a use it as a proxy for all the Media Events.
 		/// </summary>
 		/// <param name="args">The event args - Value contains our JSON</param>
-		void OnChange(ChangeEventArgs args)
+		protected virtual void OnChange(ChangeEventArgs args)
 		{
 			var ThisEvent = args?.Value?.ToString();
 			VideoEventData videoData = new VideoEventData();
 			try
 			{
 				videoData = JsonSerializer.Deserialize<VideoEventData>(ThisEvent, serializationOptions);
+				videoData.Video = this;
+				videoData.State.Video = this;
 			}
 			catch (Exception ex)
 			{
@@ -318,5 +328,21 @@ namespace Blazored.Video
 		bool RegisterVolumeChange => VolumeChangeEventRequired || VolumeChangeRequired;
 		bool RegisterWaiting => WaitingEventRequired || WaitingRequired;
 
+		async ValueTask IAsyncDisposable.DisposeAsync()
+		{
+			await DisposeAsyncCore().ConfigureAwait(false);
+			GC.SuppressFinalize(this);
+		}
+		/// <summary>
+		/// You must call <see cref="DisposeAsyncCore"/> when this method is overridden or you will have memory leaks.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual async ValueTask DisposeAsyncCore()
+		{
+			if (jsModule is not null)
+			{
+				await jsModule.DisposeAsync().ConfigureAwait(false);
+			}
+		}
 	}
 }
