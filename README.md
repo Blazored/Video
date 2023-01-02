@@ -9,7 +9,7 @@ The easiest html5 `video` implementation for [Blazor](https://blazor.net) applic
 ![Screenshot of the component in action](screenshot.png)
 
 ## Changelog
-### 2022-24-12 Version 1.2.0-beta
+### 2022-24-12 Version 1.1
  - Bump dotnet version to 6.0 as 3.x and 5.x are now out of support.
  - Add standard Methods and Properties (big thanks to https://github.com/JPVenson) and Async versions (for Server/WASM). (Issues #17 #9)
  - Include video element id ("Id") and component object ref ("Video") in VideoState and VideoEventData (Issue #19) for identifying which component triggered an event.
