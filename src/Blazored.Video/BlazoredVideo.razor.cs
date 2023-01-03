@@ -178,11 +178,11 @@ namespace Blazored.Video
 			{
 				await jsModule.InvokeVoidAsync("registerCustomEventHandler", videoRef, eventName.ToString().ToLower(), options.GetPayload());
 			}
-      catch (Exception ex)
-      {
+			catch (Exception ex)
+			{
 				LoggerFactory
 					.CreateLogger(nameof(BlazoredVideo))
-          .LogError(ex, "Failed to register an event handler for {0}", eventName);
+					.LogError(ex, "Failed to register an event handler for {0}", eventName);
 			}
 		}
 
@@ -304,6 +304,7 @@ namespace Blazored.Video
 			// Here is our catch-all event handler call!
 			EventFired?.Invoke(videoData);
 		}
+
 		bool RegisterEventFired => EventFiredEventRequired || EventFiredRequired;
 		bool RegisterAbort => AbortEventRequired || AbortRequired;
 		bool RegisterCanPlay => CanPlayEventRequired || CanPlayRequired;
