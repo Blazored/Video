@@ -91,19 +91,34 @@ namespace Blazored.Video
 				.FirstOrDefault());
 		}
 
+		/// <summary>
+		///		Starts the playback of the given <see cref="VideoItem"/>.
+		/// </summary>
+		/// <param name="value"></param>
+		public async Task Play(VideoItem value)
+		{
+			await BlazoredVideo.PausePlayback();
+			_playAfterRender = true;
+			CurrentItem = value;
+			await OnNextPlayed.InvokeAsync();
+			StateHasChanged();
+		}
+
 		private async ValueTask TryPlayItem(VideoItem next)
 		{
 			await BlazoredVideo.PausePlayback();
 			if (Repeat is RepeatValues.Loop && next is null)
 			{
 				_playAfterRender = true;
-				UpdateCurrent(VideoItems.FirstOrDefault());
+				CurrentItem = VideoItems.FirstOrDefault();
+				StateHasChanged();
 				await OnNextPlayed.InvokeAsync();
 			}
 			else if (next is not null)
 			{
 				_playAfterRender = true;
-				UpdateCurrent(next);
+				CurrentItem = next;
+				StateHasChanged();
 				await OnNextPlayed.InvokeAsync();
 			}
 			else
@@ -151,12 +166,6 @@ namespace Blazored.Video
 			}
 		}
 
-		private void UpdateCurrent(VideoItem value)
-		{
-			CurrentItem = value;
-			StateHasChanged();
-		}
-
 		protected override void BuildRenderTree(RenderTreeBuilder builder)
 		{
 			builder.OpenRegion(0);
@@ -198,7 +207,7 @@ namespace Blazored.Video
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			//the dual render cycle is necessary because only after the first cycle the source elements are created and updated into the parent control
-			//after that first cycle the items are loaded and in the 2nd cycle we can call StartPlayback with the updated sources
+			//after that first cycle the items are loaded and in the 2nd cycle we can call Play with the updated sources
 			if (_playAfterRender)
 			{
 				_playAfterRenderLoop = true;
@@ -227,7 +236,7 @@ namespace Blazored.Video
 			VideoItems.Add(videoItem);
 			if (VideoItems.Count == 1)
 			{
-				UpdateCurrent(videoItem);
+				CurrentItem = videoItem;
 			}
 			StateHasChanged();
 		}

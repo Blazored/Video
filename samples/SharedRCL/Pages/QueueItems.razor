@@ -22,7 +22,8 @@
 		<div class="list-group">
 			@foreach (var videos in videoQueue.VideoItems)
 			{
-				<div class="list-group-item @((videos == videoQueue.CurrentItem ? "list-group-item-info" : ""))">
+				<div class="list-group-item selectable @((videos == videoQueue.CurrentItem ? "list-group-item-info" : ""))"
+				     @onclick="() => videoQueue.Play(videos)">
 					<span>@(videos.VideoSources.First().Source.Split('/').Last())</span>
 				</div>
 			}

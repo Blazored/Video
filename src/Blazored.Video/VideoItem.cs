@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
@@ -8,7 +9,7 @@ namespace Blazored.Video;
 /// <summary>
 ///		Defines a Source from which the <see cref="VideoQueue"/> will schedule playback.
 /// </summary>
-public class VideoItem : ComponentBase, IDisposable
+public sealed class VideoItem : ComponentBase, IDisposable
 {
 	public VideoItem()
 	{
@@ -68,7 +69,7 @@ public class VideoItem : ComponentBase, IDisposable
 
 		VideoQueue.AddVideoItem(this);
 	}
-		
+
 	public void Dispose()
 	{
 		VideoQueue.VideoItems.Remove(this);
