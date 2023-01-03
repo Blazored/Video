@@ -185,6 +185,7 @@ namespace Blazored.Video
 				{
 					builder.AddAttribute(13, "type", item.Type);
 				}
+				builder.AddMultipleAttributes(14, item.AdditionalAttributes);
 				
 				builder.CloseElement();
 				builder.CloseRegion();

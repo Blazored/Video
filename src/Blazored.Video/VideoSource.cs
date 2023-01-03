@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazored.Video;
@@ -29,6 +30,9 @@ public class VideoSource : ComponentBase
 
 	[CascadingParameter]
 	public VideoItem VideoItem { get; set; }
+
+	[Parameter(CaptureUnmatchedValues = true)]
+	public IDictionary<string, object> AdditionalAttributes { get; set; }
 
 	protected override void OnInitialized()
 	{
