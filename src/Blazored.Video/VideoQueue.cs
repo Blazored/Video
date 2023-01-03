@@ -104,6 +104,24 @@ namespace Blazored.Video
 			StateHasChanged();
 		}
 
+		/// <summary>
+		///		Adds a new item into the queue at its end and updates the <see cref="CurrentItem"/> if necessary.
+		/// </summary>
+		/// <param name="videoItem"></param>
+		public void AddVideoItem(VideoItem videoItem)
+		{
+			if (VideoItems.Any(f => f.Id == videoItem.Id))
+			{
+				return;
+			}
+			VideoItems.Add(videoItem);
+			if (VideoItems.Count == 1)
+			{
+				CurrentItem = videoItem;
+			}
+			StateHasChanged();
+		}
+
 		private async ValueTask TryPlayItem(VideoItem next)
 		{
 			await BlazoredVideo.PausePlayback();
@@ -221,24 +239,6 @@ namespace Blazored.Video
 				await BlazoredVideo.ReloadControl();
 				await BlazoredVideo.StartPlayback();
 			}
-		}
-
-		/// <summary>
-		///		Adds a new item into the queue at its end and updates the <see cref="CurrentItem"/> if necessary.
-		/// </summary>
-		/// <param name="videoItem"></param>
-		public void AddVideoItem(VideoItem videoItem)
-		{
-			if (VideoItems.Any(f => f.Id == videoItem.Id))
-			{
-				return;
-			}
-			VideoItems.Add(videoItem);
-			if (VideoItems.Count == 1)
-			{
-				CurrentItem = videoItem;
-			}
-			StateHasChanged();
 		}
 	}
 }
