@@ -199,6 +199,7 @@ namespace Blazored.Video
 			{
 				videoData = JsonSerializer.Deserialize<VideoEventData>(ThisEvent, serializationOptions);
 				videoData.Video = this;
+				videoData.State ??= new VideoState();
 				videoData.State.Video = this;
 			}
 			catch (Exception ex)
