@@ -9,6 +9,7 @@ The easiest html5 `video` implementation for [Blazor](https://blazor.net) applic
 ![Screenshot of the component in action](screenshot.png)
 
 ## Changelog
+
 ### 2022-24-12 Version 1.1
  - Bump dotnet version to 6.0 as 3.x and 5.x are now out of support.
  - Add standard Methods and Properties (big thanks to https://github.com/JPVenson) and Async versions (for Server/WASM). (Issues #17 #9)
@@ -242,6 +243,64 @@ _Note: Attempting to read/write Properties from Blazor Server will throw a runti
 
 Example - Remote JS (Server) and WASM
 `int duration = await videoRef.GetDurationAsync()`
+
+## Video Queue
+By using the `<VideoQueue>` component instead of setting your `<source />` directly you can create a queue of videos that will be played sequentially. The VideoQueue supports multiple versions of each source and can be set to different repeat behaviors:
+
+Example Simple queue
+```razor
+<BlazoredVideo>
+     <VideoQueue Delay="0" Repeat="No">
+        <VideoItem Source="videos/elephants.mp4" type="video/mp4" />     
+        <VideoItem Source="videos/chimpanese.mp4" type="video/mp4" />     
+        <VideoItem Source="videos/turtles.mp4" type="video/mp4" />     
+     </VideoQueue>
+</BlazoredVideo>
+```
+The simple queue will play all 3 videos after each other and then stop. It is possible to control the repeat behavior by setting the Repeat property. 
+
+| Repeat | Description 
+| --- | --- | 
+| No | Plays all videos in order and stops after the last one 
+| Once | Repeats the current video forever 
+| Loop | Starts at the beginning of the queue after the last video was played 
+
+It is also possible to control the VideoQueue directly by obtaining the VideoQueue reference and invoking ether `PlayNext` or `PlayPrevious` like this:
+```razor
+<BlazoredVideo>
+     <VideoQueue @ref="videoQueue">
+        <VideoItem Source="videos/elephants.mp4" type="video/mp4" />     
+        <VideoItem Source="videos/chimpanese.mp4" type="video/mp4" />     
+        <VideoItem Source="videos/turtles.mp4" type="video/mp4" />     
+     </VideoQueue>
+</BlazoredVideo>
+
+
+<div class="d-flex flex-row">
+	<button @onclick="() => videoQueue.PlayNext()">Next</button>
+	<button @onclick="() => videoQueue.PlayPrevious()">Previous</button>
+</div>
+
+@code
+{
+	VideoQueue videoQueue;
+}
+
+```
+
+To provide multiple versions of your video you can create a `VideoSource` under each `VideoItem`.
+```razor
+<BlazoredVideo>
+     <VideoQueue @ref="videoQueue">
+        <VideoItem>
+           <VideoSource Source="videos/elephants.mp4" type="video/mp4" />
+           <VideoSource Source="videos/elephants.ogg" type="video/ogg" />
+        </VideoItem>
+        <VideoItem Source="videos/chimpanese.mp4" type="video/mp4" />     
+        <VideoItem Source="videos/turtles.mp4" type="video/mp4" />     
+     </VideoQueue>
+</BlazoredVideo>
+```
 
 ### Customising the html
 
