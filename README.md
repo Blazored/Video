@@ -245,6 +245,8 @@ Example - Remote JS (Server) and WASM
 `int duration = await videoRef.GetDurationAsync()`
 
 ## Video Queue
+> Hint: When using the `VideoQueue` component, the `BlazoredVideo.EndedEvent` is unavailable as it is utilized by the `VideoQueue`. You must instead use the `VideoQueue.OnNextPlayed` or `OnNextPlayed.OnPlaylistEnded` events.
+
 By using the `<VideoQueue>` component instead of setting your `<source />` directly you can create a queue of videos that will be played sequentially. The VideoQueue supports multiple versions of each source and can be set to different repeat behaviors:
 
 Example Simple queue
