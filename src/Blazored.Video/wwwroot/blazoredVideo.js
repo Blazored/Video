@@ -85,22 +85,35 @@ export function registerCustomEventHandler(el, eventName, payload) {
 
 	// Craft a bespoke json string to serve as a payload for the event
 	function getJSON(el, eventName, payload) {
-		let data = { id: el.id };
 		if (payload && payload.length > 0) {
 			// this syntax copies just the properties we request from the source element
 			// IE 11 compatible
+			let data = {};
 			for (var obj in payload) {
 				var item = payload[obj];
-				if (el[item]) {
-					data[item] = el[item];
+				var itemValue = el[item];
+				if (itemValue) {
+					if (typeof itemValue === 'object') {
+						data[item] = {}
+						for (var inhProp in itemValue) {
+							data[item][inhProp] = itemValue[inhProp]
+						}
+					}
+					else {
+						data[item] = itemValue
+					}
 				}
 			}
-		}
 
-		// this stringify overload eliminates undefined/null/empty values
-		return JSON.stringify(
-			{ id: el.id, name: eventName, state: data },
-			function (k, v) { return (v === undefined || v == null || v.length === 0) ? undefined : v }
-		);
+			// this stringify overload eliminates undefined/null/empty values
+			return JSON.stringify(
+				{ name: eventName, state: data }
+				, function (k, v) { return (v === undefined || v == null || v.length === 0) ? undefined : v }
+			)
+		} else {
+			return JSON.stringify(
+				{ name: eventName }
+			)
+		}
 	}
 }

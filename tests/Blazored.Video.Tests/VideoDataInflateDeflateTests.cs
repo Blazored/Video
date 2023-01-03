@@ -33,7 +33,7 @@ namespace Blazored.Video.Tests
 		public void CanBeInflatedFromAllData()
 		{
 
-			var data = @"{""id"":""video1"",""name"":""Pause"",""state"":{""id"":""video1"",""Autoplay"":false,""Controls"":true,
+			var data = @"{""id"":""video1"",""name"":""Pause"",""state"":{""id"":""video1"",""Autoplay"":false,""Controls"":true,""error"":{""code"":2,""message"":""some message""},
 				""CurrentSrc"":""https://res.cloudinary.com/blazoredgitter/video/upload/v1557015491/samples/elephants.mp4"",
 				""CurrentTime"":5.25375,""DefaultMuted"":false,""DefaultPlaybackRate"":1,""Duration"":48.516,""Ended"":false,
 				""Loop"":false,""Muted"":false,""NetworkState"":1,""Paused"":true,""PlaybackRate"":1,
