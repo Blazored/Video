@@ -1,0 +1,9 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+############################### 
+# Core EditorConfig Options   # 
+############################### 
+root = true
+
+# Code files 
+[*.{cs,csx,vb,vbx}] 
+indent_style = tab

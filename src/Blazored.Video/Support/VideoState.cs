@@ -12,7 +12,7 @@ namespace Blazored.Video.Support
 		/// <summary>
 		/// Returns a List&lt;<see cref="AudioTrack"/>&gt; object representing available audio tracks
 		/// </summary>
-		[Obsolete("This is not exactly obsolete, but not yet implemented, sorry",false)]
+		[Obsolete("This is not exactly obsolete, but not yet implemented, sorry", false)]
 		public List<AudioTrack> AudioTracks { get; set; }
 		/// <summary>
 		/// Returns whether the audio/video should start playing as soon as it is loaded
@@ -56,9 +56,9 @@ namespace Blazored.Video.Support
 		/// </summary>
 		public bool Ended { get; set; }
 		/// <summary>
-		/// Returns a <see cref="MediaError"/> object representing the error state of the audio/video
+		/// Returns a <see cref="MediaErrorState"/> object representing the error state of the audio/video
 		/// </summary>
-		public MediaError Error { get; set; }
+		public MediaErrorState Error { get; set; }
 		/// <summary>
 		/// Returns whether the audio/video should start over again when finished
 		/// </summary>

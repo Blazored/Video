@@ -1,6 +1,6 @@
 ﻿namespace Blazored.Video.Support
 {
-	public enum MediaError
+	public enum MediaErrorType
 	{
 		MEDIA_ERR_ABORTED = 1, // fetching process aborted by user
 		MEDIA_ERR_NETWORK = 2, // error occurred when downloading
