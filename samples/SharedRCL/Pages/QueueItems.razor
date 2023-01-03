@@ -23,7 +23,7 @@
 			@foreach (var videos in videoQueue.VideoItems)
 			{
 				<div class="list-group-item @((videos == videoQueue.CurrentItem ? "list-group-item-info" : ""))">
-					<span>@(videos.Source.Split('/').Last())</span>
+					<span>@(videos.VideoSources.First().Source.Split('/').Last())</span>
 				</div>
 			}
 		</div>

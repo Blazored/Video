@@ -27,7 +27,7 @@ namespace Blazored.Video
 		/// <summary>
 		///		Specifies the delay between source changes.
 		/// </summary>
-		[Parameter] 
+		[Parameter]
 		public int Delay { get; set; }
 
 		/// <summary>
@@ -59,7 +59,7 @@ namespace Blazored.Video
 		/// </summary>
 		[Parameter]
 		public EventCallback OnPlaylistEnded { get; set; }
-		
+
 		[CascadingParameter]
 		public BlazoredVideo BlazoredVideo { get; set; }
 
@@ -124,7 +124,7 @@ namespace Blazored.Video
 					VideoItems.Add(item);
 				}
 			}
-			
+
 			BlazoredVideo.EndedEvent = new EventCallback<VideoState>(this, OnPlaybackEnded);
 		}
 
@@ -167,7 +167,7 @@ namespace Blazored.Video
 			{
 				cBuilder.AddContent(5, ChildContent);
 			}));
-			
+
 			builder.CloseComponent();
 			builder.CloseRegion();
 
@@ -186,7 +186,7 @@ namespace Blazored.Video
 					builder.AddAttribute(13, "type", item.Type);
 				}
 
-				if (item.AdditionalAttributes.Count > 0)
+				if (item.AdditionalAttributes is { Count: > 0 })
 				{
 					builder.AddMultipleAttributes(14, item.AdditionalAttributes);
 				}
