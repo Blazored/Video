@@ -60,11 +60,13 @@ public sealed class VideoItem : ComponentBase, IDisposable
 	{
 		if (!string.IsNullOrWhiteSpace(Source))
 		{
+#pragma warning disable BL0005
 			VideoSources.Add(new VideoSource()
 			{
 				Source = Source,
 				Type = Type,
 			});
+#pragma warning restore BL0005
 		}
 
 		VideoQueue.AddVideoItem(this);

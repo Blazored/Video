@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -153,12 +154,21 @@ namespace Blazored.Video
 				foreach (var queueItem in QueueData)
 				{
 					var item = new VideoItem();
+#pragma warning disable BL0005
 					item.Source = queueItem;
+#pragma warning restore BL0005
 					VideoItems.Add(item);
 				}
 			}
 
+			if (BlazoredVideo.EndedEvent.HasDelegate)
+			{
+				throw new InvalidOperationException("Cannot subscribe to 'BlazoredVideo.EndedEvent' as it is already in use. Please unsubscribe from the event.");
+			}
+
+#pragma warning disable BL0005
 			BlazoredVideo.EndedEvent = new EventCallback<VideoState>(this, OnPlaybackEnded);
+#pragma warning restore BL0005
 		}
 
 		private async ValueTask OnPlaybackEnded(VideoState videoState)
@@ -231,6 +241,7 @@ namespace Blazored.Video
 				_playAfterRenderLoop = true;
 				_playAfterRender = false;
 				StateHasChanged();
+				return;
 			}
 
 			if (_playAfterRenderLoop)
