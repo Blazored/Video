@@ -21,7 +21,7 @@ namespace Blazored.Video
 		public VideoQueue()
 		{
 			Delay = 0;
-			Repeat = RepeatValues.No;
+			Repeat = RepeatValues.NoLoop;
 			VideoItems = new List<VideoItemData>();
 		}
 
@@ -150,7 +150,7 @@ namespace Blazored.Video
 		private async ValueTask TryPlayItem(VideoItemData next)
 		{
 			await BlazoredVideo.PausePlayback();
-			if (Repeat is RepeatValues.Loop && next is null)
+			if (Repeat is RepeatValues.LoopAll && next is null)
 			{
 				_playAfterRender = true;
 				CurrentItem = VideoItems.FirstOrDefault();
@@ -200,7 +200,7 @@ namespace Blazored.Video
 				await Task.Delay(Delay);
 			}
 
-			if (Repeat is RepeatValues.Once)
+			if (Repeat is RepeatValues.LoopOne)
 			{
 				await BlazoredVideo.SetCurrentTimeAsync(0);
 				if (await BlazoredVideo.GetPausedAsync())
