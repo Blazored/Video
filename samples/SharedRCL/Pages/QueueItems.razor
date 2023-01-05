@@ -1,0 +1,82 @@
+﻿@page "/queue"
+
+<h1>Blazored Video Demo - Queue</h1>
+
+<div class="d-flex flex-row">
+	<BlazoredVideo class="w-40"
+	               autoplay="autoplay"
+	               style="max-width: 300px;">
+		<VideoQueue @ref="videoQueue" 
+		            OnNextPlayedEvent="StateHasChanged" 
+		            OnPlaylistEndedEvent="StateHasChanged"
+		            Delay="Delay"
+		            Repeat="Repeat">
+			<VideoItem Source="video/elephants2.mp4#t=3" Type="video/mp4"/>
+			<VideoItem>
+				<VideoSource Source="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" Type="video/mp4" />
+			</VideoItem>
+			<VideoItem Source="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" Type="video/mp4" />
+			<VideoItem Source="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4" Type="video/mp4" />
+		</VideoQueue>
+	</BlazoredVideo>
+	
+
+	@if (videoQueue != null)
+	{
+		<div class="list-group">
+			@foreach (var videos in videoQueue.VideoItems)
+			{
+				<div class="list-group-item selectable @((videos == videoQueue.CurrentItem ? "list-group-item-info" : ""))"
+				     @onclick="() => videoQueue.Play(videos)">
+					<span>@(videos.VideoSourceData.First().Source.Split('/').Last())</span>
+				</div>
+			}
+		</div>
+	}
+
+</div>
+
+
+<div class="d-flex flex-row">
+	<button @onclick="() => videoQueue.PlayNext()">Next</button>
+	<button @onclick="() => videoQueue.PlayPrevious()">Previous</button>
+</div>
+
+<br/>
+<EditForm Model="this">
+	<div class="form-group">
+		<label for="repeat">Repeat: </label>
+
+		<InputSelect @bind-Value="Repeat" id="repeat">
+			@foreach (var repeatVal in Enum.GetValues(typeof(RepeatValues)))
+			{
+				<option value="@repeatVal">@repeatVal</option>
+			}
+		</InputSelect>
+	</div>
+	<div class="form-group">
+		<label for="repeat">Delay: </label>
+		<InputNumber @bind-Value="Delay" id="delay"/>
+	</div>
+</EditForm>
+
+@code
+{
+	VideoQueue videoQueue;
+
+	public RepeatValues Repeat { get; set; }
+	public int Delay { get; set; }
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			SetupDisplay();
+		}
+	}
+
+	private void SetupDisplay()
+	{
+		StateHasChanged();
+	}
+}
