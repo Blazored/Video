@@ -6,7 +6,11 @@
 	<BlazoredVideo class="w-40"
 	               autoplay="autoplay"
 	               style="max-width: 300px;">
-		<VideoQueue @ref="videoQueue" OnNextPlayedEvent="StateHasChanged" OnPlaylistEndedEvent="StateHasChanged">
+		<VideoQueue @ref="videoQueue" 
+		            OnNextPlayedEvent="StateHasChanged" 
+		            OnPlaylistEndedEvent="StateHasChanged"
+		            Delay="Delay"
+		            Repeat="Repeat">
 			<VideoItem Source="video/elephants2.mp4#t=3" Type="video/mp4"/>
 			<VideoItem>
 				<VideoSource Source="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" Type="video/mp4" />
@@ -60,11 +64,8 @@
 {
 	VideoQueue videoQueue;
 
-	public RepeatValues Repeat
-	{
-		get => videoQueue.Repeat;
-		set => videoQueue.Repeat = value;
-	}
+	public RepeatValues Repeat { get; set; }
+	public int Delay { get; set; }
 
 	protected override void OnAfterRender(bool firstRender)
 	{
@@ -77,11 +78,5 @@
 	private void SetupDisplay()
 	{
 		StateHasChanged();
-	}
-
-	public int Delay
-	{
-		get => videoQueue.Delay;
-		set => videoQueue.Delay = value;
 	}
 }
