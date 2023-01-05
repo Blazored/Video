@@ -53,13 +53,25 @@ namespace Blazored.Video
 		///		Will be invoked when ether the current item is repeated or a next item is selected to be played.
 		/// </summary>
 		[Parameter]
-		public EventCallback OnNextPlayed { get; set; }
+		public EventCallback OnNextPlayedEvent { get; set; }
 
 		/// <summary>
 		///		Will be invoked when there is no other item to play.
 		/// </summary>
 		[Parameter]
-		public EventCallback OnPlaylistEnded { get; set; }
+		public EventCallback OnPlaylistEndedEvent { get; set; }
+
+		/// <summary>
+		///		Will be invoked when ether the current item is repeated or a next item is selected to be played.
+		/// </summary>
+		[Parameter]
+		public Action OnNextPlayed { get; set; }
+
+		/// <summary>
+		///		Will be invoked when there is no other item to play.
+		/// </summary>
+		[Parameter]
+		public Action OnPlaylistEnded { get; set; }
 
 		[CascadingParameter]
 		public BlazoredVideo BlazoredVideo { get; set; }
@@ -101,8 +113,20 @@ namespace Blazored.Video
 			await BlazoredVideo.PausePlayback();
 			_playAfterRender = true;
 			CurrentItem = value;
-			await OnNextPlayed.InvokeAsync();
+			await InvokeNextPlayed();
 			StateHasChanged();
+		}
+
+		private Task InvokeNextPlayed()
+		{
+			OnNextPlayed?.Invoke();
+			return OnNextPlayedEvent.InvokeAsync();
+		}
+
+		private Task InvokePlaylistEndedEvent()
+		{
+			OnPlaylistEnded?.Invoke();
+			return OnPlaylistEndedEvent.InvokeAsync();
 		}
 
 		/// <summary>
@@ -131,18 +155,18 @@ namespace Blazored.Video
 				_playAfterRender = true;
 				CurrentItem = VideoItems.FirstOrDefault();
 				StateHasChanged();
-				await OnNextPlayed.InvokeAsync();
+				await InvokeNextPlayed();
 			}
 			else if (next is not null)
 			{
 				_playAfterRender = true;
 				CurrentItem = next;
 				StateHasChanged();
-				await OnNextPlayed.InvokeAsync();
+				await InvokeNextPlayed();
 			}
 			else
 			{
-				await OnPlaylistEnded.InvokeAsync();
+				await InvokePlaylistEndedEvent();
 				await BlazoredVideo.PausePlayback();
 			}
 		}
@@ -163,7 +187,7 @@ namespace Blazored.Video
 
 			if (BlazoredVideo.EndedEvent.HasDelegate)
 			{
-				throw new InvalidOperationException("Cannot subscribe to 'BlazoredVideo.EndedEvent' as it is already in use. Please unsubscribe from the event.");
+				throw new InvalidOperationException("When you are using VideoQueue, you cannot subscribe to 'BlazoredVideo.EndedEvent' - you should instead subscribe to 'VideoQueue.OnPlaylistEnded'");
 			}
 
 #pragma warning disable BL0005
@@ -186,7 +210,7 @@ namespace Blazored.Video
 					await BlazoredVideo.StartPlayback();
 				}
 
-				await OnNextPlayed.InvokeAsync();
+				await InvokeNextPlayed();
 			}
 			else
 			{

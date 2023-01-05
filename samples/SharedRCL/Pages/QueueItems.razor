@@ -6,7 +6,7 @@
 	<BlazoredVideo class="w-40"
 	               autoplay="autoplay"
 	               style="max-width: 300px;">
-		<VideoQueue @ref="videoQueue" OnNextPlayed="StateHasChanged" OnPlaylistEnded="StateHasChanged">
+		<VideoQueue @ref="videoQueue" OnNextPlayedEvent="StateHasChanged" OnPlaylistEndedEvent="StateHasChanged">
 			<VideoItem Source="video/elephants2.mp4#t=3" Type="video/mp4"/>
 			<VideoItem>
 				<VideoSource Source="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" Type="video/mp4" />
