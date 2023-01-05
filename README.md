@@ -263,9 +263,9 @@ The simple queue will play all 3 videos after each other and then stop. It is po
 
 | Repeat | Description 
 | --- | --- | 
-| No | Plays all videos in order and stops after the last one 
-| Once | Repeats the current video forever 
-| Loop | Starts at the beginning of the queue after the last video was played 
+| NoLoop | Plays all videos in order and stops after the last one 
+| LoopOne | Repeats the current video forever 
+| LoopAll | Starts at the beginning of the queue after the last video was played 
 
 It is also possible to control the VideoQueue directly by obtaining the VideoQueue reference and invoking ether `PlayNext` or `PlayPrevious` like this:
 ```razor
