@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -13,11 +12,8 @@ public sealed class VideoItem : ComponentBase, IDisposable
 {
 	public VideoItem()
 	{
-		Id = Guid.NewGuid().ToString("N");
-		VideoSources = new List<VideoSource>();
+		VideoItemData = new VideoItemData();
 	}
-
-	internal string Id { get; }
 
 	/// <summary>
 	///		The source URI from which to playback.
@@ -37,7 +33,7 @@ public sealed class VideoItem : ComponentBase, IDisposable
 	[Parameter]
 	public RenderFragment ChildContent { get; set; }
 
-	public IList<VideoSource> VideoSources { get; set; }
+	public VideoItemData VideoItemData { get; set; }
 
 	protected override void BuildRenderTree(RenderTreeBuilder builder)
 	{
@@ -60,20 +56,14 @@ public sealed class VideoItem : ComponentBase, IDisposable
 	{
 		if (!string.IsNullOrWhiteSpace(Source))
 		{
-#pragma warning disable BL0005
-			VideoSources.Add(new VideoSource()
-			{
-				Source = Source,
-				Type = Type,
-			});
-#pragma warning restore BL0005
+			VideoItemData.VideoSourceData.Add(new VideoSourceData(Source, Type));
 		}
 
-		VideoQueue.AddVideoItem(this);
+		VideoQueue.AddVideoItem(VideoItemData);
 	}
 
 	public void Dispose()
 	{
-		VideoQueue.VideoItems.Remove(this);
+		VideoQueue.VideoItems.Remove(VideoItemData);
 	}
 }

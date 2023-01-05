@@ -22,7 +22,7 @@ namespace Blazored.Video
 		{
 			Delay = 0;
 			Repeat = RepeatValues.No;
-			VideoItems = new List<VideoItem>();
+			VideoItems = new List<VideoItemData>();
 		}
 
 		/// <summary>
@@ -76,8 +76,8 @@ namespace Blazored.Video
 		[CascadingParameter]
 		public BlazoredVideo BlazoredVideo { get; set; }
 
-		public IList<VideoItem> VideoItems { get; }
-		public VideoItem CurrentItem { get; private set; }
+		public IList<VideoItemData> VideoItems { get; }
+		public VideoItemData CurrentItem { get; private set; }
 
 		/// <summary>
 		///		Skips the current item and plays the next in queue.
@@ -105,10 +105,10 @@ namespace Blazored.Video
 		}
 
 		/// <summary>
-		///		Starts the playback of the given <see cref="VideoItem"/>.
+		///		Starts the playback of the given <see cref="VideoItemData"/>.
 		/// </summary>
 		/// <param name="value"></param>
-		public async Task Play(VideoItem value)
+		public async Task Play(VideoItemData value)
 		{
 			await BlazoredVideo.PausePlayback();
 			_playAfterRender = true;
@@ -133,7 +133,7 @@ namespace Blazored.Video
 		///		Adds a new item into the queue at its end and updates the <see cref="CurrentItem"/> if necessary.
 		/// </summary>
 		/// <param name="videoItem"></param>
-		public void AddVideoItem(VideoItem videoItem)
+		public void AddVideoItem(VideoItemData videoItem)
 		{
 			if (VideoItems.Any(f => f.Id == videoItem.Id))
 			{
@@ -147,7 +147,7 @@ namespace Blazored.Video
 			StateHasChanged();
 		}
 
-		private async ValueTask TryPlayItem(VideoItem next)
+		private async ValueTask TryPlayItem(VideoItemData next)
 		{
 			await BlazoredVideo.PausePlayback();
 			if (Repeat is RepeatValues.Loop && next is null)
@@ -177,10 +177,8 @@ namespace Blazored.Video
 			{
 				foreach (var queueItem in QueueData)
 				{
-					var item = new VideoItem();
-#pragma warning disable BL0005
-					item.Source = queueItem;
-#pragma warning restore BL0005
+					var item = new VideoItemData();
+					item.VideoSourceData.Add(new VideoSourceData(queueItem, null));
 					VideoItems.Add(item);
 				}
 			}
@@ -237,7 +235,7 @@ namespace Blazored.Video
 				return;
 			}
 
-			foreach (var item in CurrentItem.VideoSources)
+			foreach (var item in CurrentItem.VideoSourceData)
 			{
 				builder.OpenRegion(10);
 				builder.OpenElement(11, "source");

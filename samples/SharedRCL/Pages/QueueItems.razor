@@ -28,7 +28,7 @@
 			{
 				<div class="list-group-item selectable @((videos == videoQueue.CurrentItem ? "list-group-item-info" : ""))"
 				     @onclick="() => videoQueue.Play(videos)">
-					<span>@(videos.VideoSources.First().Source.Split('/').Last())</span>
+					<span>@(videos.VideoSourceData.First().Source.Split('/').Last())</span>
 				</div>
 			}
 		</div>

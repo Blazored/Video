@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazored.Video;
@@ -11,22 +10,28 @@ public class VideoSource : ComponentBase
 {
 	public VideoSource()
 	{
-		Id = Guid.NewGuid().ToString("N");
+		_videoSourceData = new VideoSourceData();
 	}
-
-	internal string Id { get; }
 
 	/// <summary>
 	///		The source URI from which to playback.
 	/// </summary>
 	[Parameter]
-	public string Source { get; set; }
+	public string Source
+	{
+		get => _videoSourceData.Source;
+		set => _videoSourceData.Source = value;
+	}
 
 	/// <summary>
 	///		The mime type of the <see cref="Source"/> URI. Optional.
 	/// </summary>
 	[Parameter]
-	public string Type { get; set; }
+	public string Type
+	{
+		get => _videoSourceData.Type;
+		set => _videoSourceData.Type = value;
+	}
 
 	[CascadingParameter]
 	public VideoItem VideoItem { get; set; }
@@ -34,8 +39,10 @@ public class VideoSource : ComponentBase
 	[Parameter(CaptureUnmatchedValues = true)]
 	public IDictionary<string, object> AdditionalAttributes { get; set; }
 
+	private VideoSourceData _videoSourceData;
+
 	protected override void OnInitialized()
 	{
-		VideoItem.VideoSources.Add(this);
+		VideoItem.VideoItemData.VideoSourceData.Add(_videoSourceData);
 	}
 }
