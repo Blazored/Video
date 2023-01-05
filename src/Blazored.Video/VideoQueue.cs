@@ -26,7 +26,7 @@ namespace Blazored.Video
 		}
 
 		/// <summary>
-		///		Specifies the delay between source changes.
+		///		Specifies the delay between source changes in milliseconds.
 		/// </summary>
 		[Parameter]
 		public int Delay { get; set; }
