@@ -38,9 +38,4 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.28" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<VersionPrefix>1.0.2</VersionPrefix>
-		<VersionSuffix></VersionSuffix>
-	</PropertyGroup>
-
 </Project>
