@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -32,8 +32,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.28" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.28" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.28" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<VersionPrefix>1.0.6</VersionPrefix>
+		<VersionSuffix></VersionSuffix>
+	</PropertyGroup>
 
 </Project>

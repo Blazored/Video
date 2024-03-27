@@ -341,7 +341,18 @@ namespace Blazored.Video
 		{
 			if (jsModule is not null)
 			{
-				await jsModule.DisposeAsync().ConfigureAwait(false);
+				try
+				{
+					await jsModule.DisposeAsync().ConfigureAwait(false);
+				}
+				catch (TaskCanceledException)
+				{
+					// ignore TaskCanceledException
+				}
+				catch (JSDisconnectedException)
+				{
+					// ignore JSDisconnectedException exceptions
+				}
 			}
 		}
 	}
