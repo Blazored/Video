@@ -57,9 +57,9 @@ namespace Blazored.Video
 		/// <summary>
 		///		Sets or returns the current playback position in the audio/video (in seconds)
 		/// </summary>
-		public int CurrentTime
+		public double CurrentTime
 		{
-			get { return GetValue<int>(); }
+			get { return GetValue<double>(); }
 			set { SetValue(value); }
 		}
 
@@ -82,9 +82,9 @@ namespace Blazored.Video
 		/// <summary>
 		///		Returns the length of the current audio/video (in seconds)
 		/// </summary>
-		public int Duration
+		public double Duration
 		{
-			get { return GetValue<int>(); }
+			get { return GetValue<double>(); }
 		}
 
 		/// <summary>

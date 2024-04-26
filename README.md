@@ -14,6 +14,7 @@ The easiest html5 `video` implementation for [Blazor](https://blazor.net) applic
  - Add standard Methods and Properties (big thanks to https://github.com/JPVenson) and Async versions (for Server/WASM). (Issues #17 #9)
  - Include video element id ("Id") and component object ref ("Video") in VideoState and VideoEventData (Issue #19) for identifying which component triggered an event.
 
+
 ## Getting Setup
 
 You can install the package via the nuget package manager - just search for *Blazored.Video*. You can also install via powershell using the following command.
