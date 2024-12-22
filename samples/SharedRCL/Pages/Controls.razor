@@ -17,6 +17,7 @@
 	</BlazoredVideo>
 	<div @key="1" class="d-flex flex-column w-25 p-2">
 		<button class="btn btn-primary" @onclick=PlayOrPause>@PausePlayText</button>
+		<button class="btn btn-secondary" @onclick=RequestFullScreen>Full Screen</button>
 		<fieldset title="" class="d-flex flex-column mt-2">
 			<label for="volume">Volume @(volume * 10)</label>
 			<input id="volume" type="range" value=@volume @onchange=SetVolume min=0 max=1 step=0.1 list="steplist" />
@@ -95,6 +96,10 @@
 		{
 			await video.PausePlayback();
 		}
+	}
+	async Task RequestFullScreen()
+	{
+			await video.RequestFullScreen();
 	}
 
 	async Task SetVolume(ChangeEventArgs args)

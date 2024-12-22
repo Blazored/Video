@@ -24,6 +24,12 @@ namespace Blazored.Video
 		public ValueTask ReloadControl() => DoInvokeAsync(method: "load");
 
 		/// <summary>
+		/// Request full screen
+		/// </summary>
+		/// <returns></returns>
+		public ValueTask RequestFullScreen() => DoInvokeAsync(method: "requestFullscreen");
+
+		/// <summary>
 		/// Check whether the supplied mediaType can be played
 		/// </summary>
 		/// <returns>True/False</returns>
